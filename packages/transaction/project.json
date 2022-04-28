@@ -1,0 +1,22 @@
+{
+  "root": "packages/transaction",
+  "sourceRoot": "packages/transaction/src",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/transaction/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/transaction"],
+      "options": {
+        "jestConfig": "packages/transaction/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
