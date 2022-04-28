@@ -1,6 +1,14 @@
 {
   "version": 2,
   "projects": {
-    "core": "apps/core"
+    "cache": "packages/cache",
+    "common": "packages/common",
+    "config": "packages/config",
+    "database": "integration/database",
+    "error": "packages/error",
+    "logger": "packages/logger",
+    "request-context": "packages/request-context",
+    "testing": "packages/testing",
+    "transaction": "packages/transaction"
   }
 }

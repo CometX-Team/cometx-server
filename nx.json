@@ -29,5 +29,9 @@
       }
     ]
   },
+  "workspaceLayout": {
+    "appsDir": "integration",
+    "libsDir": "packages"
+  },
   "defaultProject": "core"
 }

@@ -6,6 +6,7 @@ specifiers:
   '@nestjs/platform-express': ^8.0.0
   '@nestjs/schematics': ^8.0.0
   '@nestjs/testing': ^8.0.0
+  '@nestjs/typeorm': ^8.0.3
   '@nrwl/cli': 14.0.3
   '@nrwl/eslint-plugin-nx': 14.0.3
   '@nrwl/jest': 14.0.3
@@ -20,6 +21,7 @@ specifiers:
   eslint: ~8.12.0
   eslint-config-prettier: 8.1.0
   jest: 27.5.1
+  lodash: ^4.17.21
   nx: 14.0.3
   prettier: ^2.5.1
   reflect-metadata: ^0.1.13
@@ -33,6 +35,8 @@ dependencies:
   '@nestjs/common': 8.4.4_e7ea248743279784063e3708d703abc5
   '@nestjs/core': 8.4.4_b63c269346792a9d57cfab86d23050d2
   '@nestjs/platform-express': 8.4.4_a78378ec5f3cecc3c353ed91b578f3e6
+  '@nestjs/typeorm': 8.0.3_241cb6a4085d63233d36725823a84b39
+  lodash: 4.17.21
   reflect-metadata: 0.1.13
   rxjs: 7.5.5
   tslib: 2.4.0
@@ -777,6 +781,22 @@ packages:
       '@nestjs/platform-express': 8.4.4_a78378ec5f3cecc3c353ed91b578f3e6
       tslib: 2.3.1
     dev: true
+
+  /@nestjs/typeorm/8.0.3_241cb6a4085d63233d36725823a84b39:
+    resolution: {integrity: sha512-tf9rTXP6LeFInkwd+tktQhtLRsKp4RRYImprqT8gcHcJDx+xMP1IygnXELOKwF5vo2/mnhrGtBlRQ/iiS6170g==}
+    peerDependencies:
+      '@nestjs/common': ^8.0.0
+      '@nestjs/core': ^8.0.0
+      reflect-metadata: ^0.1.13
+      rxjs: ^7.2.0
+      typeorm: ^0.2.34
+    dependencies:
+      '@nestjs/common': 8.4.4_e7ea248743279784063e3708d703abc5
+      '@nestjs/core': 8.4.4_b63c269346792a9d57cfab86d23050d2
+      reflect-metadata: 0.1.13
+      rxjs: 7.5.5
+      uuid: 8.3.2
+    dev: false
 
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -3966,7 +3986,6 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-    dev: true
 
   /log-symbols/4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}

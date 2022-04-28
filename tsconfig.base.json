@@ -14,7 +14,18 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@cometx-server/cache": ["packages/cache/src/index.ts"],
+      "@cometx-server/common": ["packages/common/src/index.ts"],
+      "@cometx-server/config": ["packages/config/src/index.ts"],
+      "@cometx-server/error": ["packages/error/src/index.ts"],
+      "@cometx-server/logger": ["packages/logger/src/index.ts"],
+      "@cometx-server/request-context": [
+        "packages/request-context/src/index.ts"
+      ],
+      "@cometx-server/testing": ["packages/testing/src/index.ts"],
+      "@cometx-server/transaction": ["packages/transaction/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
