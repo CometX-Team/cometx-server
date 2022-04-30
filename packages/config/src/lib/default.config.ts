@@ -1,21 +1,9 @@
+import { ConnectionOptions } from 'typeorm';
 import {
-  RuntimeCometXConfig,
   ApiOptions,
   AuthOptions,
-} from '@cometx-server/config';
-import * as dotenv from 'dotenv';
-import path = require('path');
-import { ConnectionOptions } from 'typeorm';
-
-dotenv.config({
-  path: `integration/database/.env.${
-    process.env['NODE_ENV'] === 'development'
-      ? 'dev'
-      : process.env['NODE_ENV'] === 'production'
-      ? 'prod'
-      : 'test'
-  }`,
-});
+  RuntimeCometXConfig,
+} from './config.interface';
 
 const apiConfig: Required<ApiOptions> = {
   hostname: '',
@@ -60,10 +48,9 @@ const databaseConfig: ConnectionOptions = {
   port: 5432,
   username: process.env['DATABASE_USER'],
   password: process.env['DATABASE_PASSWORD'],
-  migrations: [path.join(__dirname, '../migrations/*.ts')],
 };
 
-export const config: RuntimeCometXConfig = {
+export const defaultConfig: RuntimeCometXConfig = {
   apiConfig,
   authConfig,
   databaseConfig,

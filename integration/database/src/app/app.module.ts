@@ -1,20 +1,13 @@
 import { ConfigModule } from '@cometx-server/config';
 import { TransactionModule } from '@cometx-server/transaction';
 import { Module } from '@nestjs/common';
-import { environment } from '../environments/environment';
-import { appConfiguration } from './app.config';
+import { config } from '../environments/environment';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      ...environment.appConfig,
-      load: [appConfiguration],
-    }),
-    TransactionModule.forRoot(environment.databaseConfig),
-  ],
+  imports: [ConfigModule, TransactionModule.forRoot()],
   controllers: [AppController],
   providers: [AppService],
 })

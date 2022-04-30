@@ -1,5 +1,5 @@
 import { AuthenticationStrategy } from '@cometx-server/authentication';
-import { ConfigModuleOptions } from '@cometx-server/config';
+import { Type } from '@nestjs/common';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { ValidationContext } from 'graphql';
 import { ConnectionOptions } from 'typeorm';
@@ -17,7 +17,7 @@ export interface ApiOptions {
    *
    * @default ''
    */
-  hostname?: string;
+  hostname: string;
   /**
    * @description
    * Which port the CometX server should listen on.
@@ -214,11 +214,6 @@ export interface AuthOptions {
 export interface CometXConfig {
   /**
    * @description
-   * Nestjs Build-in Config Options including cache, validation, etc.
-   */
-  appConfig: ConfigModuleOptions;
-  /**
-   * @description
    * Configuration for the GraphQL APIs, including hostname, port, CORS settings,
    * middleware etc.
    */
@@ -236,3 +231,27 @@ export interface CometXConfig {
    */
   authConfig: AuthOptions;
 }
+
+/**
+ * @description
+ * This interface represents the CometXConfig object available at run-time, i.e. the user-supplied
+ * config values have been merged with the {@link defaultConfig} values.
+ */
+export interface RuntimeCometXConfig extends Required<CometXConfig> {
+  apiConfig: Required<ApiOptions>;
+  authConfig: Required<AuthOptions>;
+}
+
+type DeepPartialSimple<T> = {
+  [P in keyof T]?:
+    | null
+    | (T[P] extends Array<infer U>
+        ? Array<DeepPartialSimple<U>>
+        : T[P] extends ReadonlyArray<infer X>
+        ? ReadonlyArray<DeepPartialSimple<X>>
+        : T[P] extends Type<any>
+        ? T[P]
+        : DeepPartialSimple<T[P]>);
+};
+
+export type PartialCometXConfig = DeepPartialSimple<CometXConfig>;
