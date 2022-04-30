@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@cometx-server/authentication": ["packages/authentication/src/index.ts"],
       "@cometx-server/cache": ["packages/cache/src/index.ts"],
       "@cometx-server/common": ["packages/common/src/index.ts"],
       "@cometx-server/config": ["packages/config/src/index.ts"],

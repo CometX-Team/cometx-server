@@ -9,8 +9,7 @@
       "options": {
         "outputPath": "dist/integration/database",
         "main": "integration/database/src/main.ts",
-        "tsConfig": "integration/database/tsconfig.app.json",
-        "assets": ["integration/database/src/assets"]
+        "tsConfig": "integration/database/tsconfig.app.json"
       },
       "configurations": {
         "production": {

@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "authentication": "packages/authentication",
     "cache": "packages/cache",
     "common": "packages/common",
     "config": "packages/config",
