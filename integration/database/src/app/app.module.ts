@@ -1,13 +1,28 @@
 import { ConfigModule } from '@cometx-server/config';
+import { TransactionModule } from '@cometx-server/transaction';
 import { Module } from '@nestjs/common';
-import { ApiModule } from '../api/api.module';
+import { APP_GUARD } from '@nestjs/core';
+import { DatabaseContextModule } from '../database-context/database-context.module';
+import { DatabaseAuthGuard } from '../guard/database.auth.guard';
+import { UserModule } from '../user/user.module';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
-  imports: [ConfigModule, ApiModule],
+  imports: [
+    ConfigModule,
+    TransactionModule.forRoot(),
+    DatabaseContextModule,
+    UserModule,
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: DatabaseAuthGuard,
+    },
+  ],
 })
 export class AppModule {}

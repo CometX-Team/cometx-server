@@ -4,7 +4,12 @@
  */
 
 import { Type } from '@cometx-server/common';
-import { CometXConfig, getConfig, setConfig } from '@cometx-server/config';
+import {
+  CometXConfig,
+  getConfig,
+  preBootstrapConfig,
+  setConfig,
+} from '@cometx-server/config';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
@@ -12,7 +17,10 @@ import { coreEntitiesMap } from './environments/entitiesMap';
 import { config } from './environments/environment';
 
 async function bootstrap(userConfig: Partial<CometXConfig>) {
-  const config = await preBootstrap(userConfig);
+  const config = preBootstrapConfig(
+    userConfig,
+    coreEntitiesMap as unknown as Array<Type<any>>,
+  );
 
   const { AppModule } = await import('./app/app.module');
 
@@ -29,35 +37,6 @@ async function bootstrap(userConfig: Partial<CometXConfig>) {
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
   );
-}
-
-async function preBootstrap(userConfig: Partial<CometXConfig>) {
-  if (userConfig) {
-    setConfig(userConfig);
-  }
-
-  const entities = await getAllEntities();
-
-  setConfig({
-    databaseConfig: {
-      entities,
-    },
-  });
-
-  const config = getConfig();
-
-  return config;
-}
-
-/**
- * Returns an array of core entities and any additional entities defined in plugins.
- */
-export async function getAllEntities(): Promise<Array<Type<any>>> {
-  const coreEntities = Object.values(coreEntitiesMap) as Array<Type<any>>;
-
-  const allEntities: Array<Type<any>> = coreEntities;
-
-  return allEntities;
 }
 
 bootstrap(config);
