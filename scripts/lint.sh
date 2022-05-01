@@ -1,0 +1,1 @@
+pnpx nx run-many --all --target=lint
