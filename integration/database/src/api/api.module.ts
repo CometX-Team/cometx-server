@@ -1,8 +1,8 @@
-import { AuthGuard } from '@cometx-server/authentication';
-import { RequestContextModule } from '@cometx-server/request-context';
 import { TransactionModule } from '@cometx-server/transaction';
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
+import { DatabaseContextModule } from '../database-context/database-context.module';
+import { DatabaseAuthGuard } from '../guard/database.auth.guard';
 import { UserModule } from '../user/user.module';
 
 /**
@@ -11,11 +11,11 @@ import { UserModule } from '../user/user.module';
  * of the business logic.
  */
 @Module({
-  imports: [TransactionModule.forRoot(), RequestContextModule, UserModule],
+  imports: [TransactionModule.forRoot(), DatabaseContextModule, UserModule],
   providers: [
     {
       provide: APP_GUARD,
-      useClass: AuthGuard,
+      useClass: DatabaseAuthGuard,
     },
   ],
 })
