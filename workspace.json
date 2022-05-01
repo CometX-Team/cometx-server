@@ -7,6 +7,7 @@
     "config": "packages/config",
     "database": "integration/database",
     "error": "packages/error",
+    "graphql": "packages/graphql",
     "logger": "packages/logger",
     "request-context": "packages/request-context",
     "testing": "packages/testing",
