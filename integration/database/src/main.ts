@@ -3,24 +3,21 @@
  * This is only a minimal backend to get started.
  */
 
-import { Type } from '@cometx-server/common';
-import {
-  CometXConfig,
-  getConfig,
-  preBootstrapConfig,
-  setConfig,
-} from '@cometx-server/config';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { Type } from '@cometx-server/common';
+import { CometXConfig, preBootstrapConfig } from '@cometx-server/config';
+import { getAllEntities } from '@cometx-server/transaction';
 
 import { coreEntitiesMap } from './environments/entitiesMap';
 import { config } from './environments/environment';
 
 async function bootstrap(userConfig: Partial<CometXConfig>) {
-  const config = preBootstrapConfig(
-    userConfig,
+  const entities = getAllEntities(
     coreEntitiesMap as unknown as Array<Type<any>>,
   );
+
+  const config = preBootstrapConfig(userConfig, entities);
 
   const { AppModule } = await import('./app/app.module');
 

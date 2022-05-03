@@ -1,23 +1,22 @@
 import { Type } from '@cometx-server/common';
-import { getAllEntities } from '@cometx-server/transaction';
 import { getConfig, setConfig } from '../config.helpers';
 import { CometXConfig } from '../config.interface';
 
 export function preBootstrapConfig(
   userConfig: Partial<CometXConfig>,
-  coreEntitiesMap: Array<Type<any>>,
+  entities: Array<Type<any>>,
 ) {
   if (userConfig) {
     setConfig(userConfig);
   }
 
-  const entities = getAllEntities(coreEntitiesMap);
-
-  setConfig({
+  Object.assign(userConfig, {
     databaseConfig: {
       entities,
     },
   });
+
+  setConfig(userConfig);
 
   const config = getConfig();
 
