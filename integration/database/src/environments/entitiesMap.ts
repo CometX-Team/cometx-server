@@ -1,5 +1,7 @@
-import {User} from '../user/user.entity';
+import { User } from '../user/user.entity';
+import { Administrator } from '../administrator/administrator.entity';
 
 export const coreEntitiesMap = {
-    User
+  User,
+  Administrator,
 };
