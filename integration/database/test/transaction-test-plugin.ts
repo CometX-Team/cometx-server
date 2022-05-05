@@ -8,6 +8,16 @@ import { User } from '../src/user/user.entity';
 import { InternalServerError } from '@cometx-server/error';
 import { Administrator } from '../src/administrator/administrator.entity';
 
+export const allSettled = promises => {
+  return Promise.all(
+    promises.map((promise, i) =>
+      promise
+        .then(value => ({ statue: 'fullfiled' as const, value }))
+        .catch(reason => ({ status: 'rejected' as const, reason })),
+    ),
+  );
+};
+
 @Injectable()
 export class TestUserService {
   constructor(private connection: TransactionalConnection) {}
