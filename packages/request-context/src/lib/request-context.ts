@@ -38,7 +38,10 @@ export class RequestContext {
    * over the resulting RequestContext object.
    */
   static empty(): RequestContext {
-    throw new InternalServerErrorException('No Implementation');
+    return new RequestContext({
+      isAuthorized: true,
+      authorizedAsOwnerOnly: false,
+    });
   }
 
   /**

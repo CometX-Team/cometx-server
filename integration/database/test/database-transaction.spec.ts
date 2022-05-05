@@ -52,9 +52,9 @@ describe('Transaction Infrastructure', () => {
 
   it('non failing transaction', async () => {
     const createdAdmin = await adminService.createAdministrator(
-      ctx,
       'test@gmail.com',
       false,
+      ctx,
     );
 
     expect(createdAdmin.emailAddress).toBe('test@gmail.com');
@@ -72,7 +72,7 @@ describe('Transaction Infrastructure', () => {
 
   it('failing transaction', async () => {
     try {
-      await adminService.createAdministrator(ctx, 'test2@gmail.com', true);
+      await adminService.createAdministrator('test2@gmail.com', true, ctx);
       fail('Should have thrown');
     } catch (e) {
       expect(e.message).toContain('Failed');
@@ -102,9 +102,9 @@ describe('Transaction Infrastructure', () => {
         promises.push(
           new Promise(resolve => setTimeout(resolve, i * 10)).then(async () => {
             await adminService.createAdministrator(
-              ctx,
               `${emailAddress}${i}@gmail.com`,
               i < noOfExecution * failFactor,
+              ctx,
             );
           }),
         );
@@ -116,6 +116,26 @@ describe('Transaction Infrastructure', () => {
 
       await allSettled(promises);
 
+      fail('Should have thrown');
+    } catch (error) {
+      expect(error.message).toContain('Failed');
+    }
+
+    const verify = await adminService.verify();
+
+    expect(verify.admins.length).toBe(1);
+    expect(verify.users.length).toBe(1);
+    expect(
+      !!verify.admins.find((a: any) => a.emailAddress === 'test2@gmail.com'),
+    ).toBe(false);
+    expect(
+      !!verify.users.find((u: any) => u.identifier === 'test2@gmail.com'),
+    ).toBe(false);
+  });
+
+  it('failing transaction without request context', async () => {
+    try {
+      await adminService.createAdministrator('test2@gmail.com', true);
       fail('Should have thrown');
     } catch (error) {
       expect(error.message).toContain('Failed');

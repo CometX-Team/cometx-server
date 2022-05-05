@@ -10,4 +10,11 @@ export class DatabaseContext extends RequestContext {
   }) {
     super(options);
   }
+
+  static empty(): DatabaseContext {
+    return new DatabaseContext({
+      isAuthorized: true,
+      authorizedAsOwnerOnly: false,
+    });
+  }
 }

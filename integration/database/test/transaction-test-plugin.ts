@@ -44,28 +44,49 @@ export class TestAdminService {
   ) {}
 
   async createAdministrator(
-    ctx: DatabaseContext,
     emailAddress: string,
     fail: boolean,
+    ctx?: DatabaseContext,
   ) {
-    return this.connection.withTransaction(ctx, async _ctx => {
-      const user = await this.userService.createUser(_ctx, emailAddress);
+    if (!ctx) {
+      return this.connection.withTransaction(async _ctx => {
+        const user = await this.userService.createUser(_ctx, emailAddress);
 
-      if (fail) {
-        throw new InternalServerError({ message: 'Failed' });
-      }
+        if (fail) {
+          throw new InternalServerError({ message: 'Failed' });
+        }
 
-      const admin = this.connection.getRepository(_ctx, Administrator).save(
-        new Administrator({
-          user,
-          emailAddress,
-          firstName: 'john',
-          lastName: 'doe',
-        }),
-      );
+        const admin = this.connection.getRepository(_ctx, Administrator).save(
+          new Administrator({
+            user,
+            emailAddress,
+            firstName: 'john',
+            lastName: 'doe',
+          }),
+        );
 
-      return admin;
-    });
+        return admin;
+      });
+    } else {
+      return this.connection.withTransaction(ctx, async _ctx => {
+        const user = await this.userService.createUser(_ctx, emailAddress);
+
+        if (fail) {
+          throw new InternalServerError({ message: 'Failed' });
+        }
+
+        const admin = this.connection.getRepository(_ctx, Administrator).save(
+          new Administrator({
+            user,
+            emailAddress,
+            firstName: 'john',
+            lastName: 'doe',
+          }),
+        );
+
+        return admin;
+      });
+    }
   }
 
   async verify() {
