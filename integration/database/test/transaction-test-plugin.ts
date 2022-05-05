@@ -38,22 +38,31 @@ export class TestAdminService {
     emailAddress: string,
     fail: boolean,
   ) {
-    const user = await this.userService.createUser(ctx, emailAddress);
+    return this.connection.withTransaction(ctx, async _ctx => {
+      const user = await this.userService.createUser(_ctx, emailAddress);
 
-    if (fail) {
-      throw new InternalServerError({ message: 'Failed' });
-    }
+      if (fail) {
+        throw new InternalServerError({ message: 'Failed' });
+      }
 
-    const admin = this.connection.getRepository(ctx, Administrator).save(
-      new Administrator({
-        user,
-        emailAddress,
-        firstName: 'john',
-        lastName: 'doe',
-      }),
-    );
+      const admin = this.connection.getRepository(_ctx, Administrator).save(
+        new Administrator({
+          user,
+          emailAddress,
+          firstName: 'john',
+          lastName: 'doe',
+        }),
+      );
 
-    return admin;
+      return admin;
+    });
+  }
+
+  async verify() {
+    const admins = await this.connection.getRepository(Administrator).find();
+    const users = await this.connection.getRepository(User).find();
+
+    return { admins, users };
   }
 }
 
