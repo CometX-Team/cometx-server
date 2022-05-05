@@ -10,6 +10,7 @@ import {
   EntityManager,
 } from 'typeorm';
 import { RequestContext } from '@cometx-server/request-context';
+import { TransactionWrapper } from './transaction.wrapper';
 
 /**
  * @description
@@ -25,7 +26,10 @@ import { RequestContext } from '@cometx-server/request-context';
  */
 @Injectable()
 export class TransactionalConnection {
-  constructor(@InjectConnection() private connection: Connection) {}
+  constructor(
+    @InjectConnection() private connection: Connection,
+    private transactionWrapper: TransactionWrapper,
+  ) {}
 
   /**
    * @description
@@ -81,6 +85,36 @@ export class TransactionalConnection {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return getRepository(ctxOrTarget ?? maybeTarget!);
     }
+  }
+
+  async withTransaction<T>(
+    work: (ctx: RequestContext) => Promise<T>,
+  ): Promise<T>;
+  async withTransaction<T>(
+    ctx: RequestContext,
+    work: (ctx: RequestContext) => Promise<T>,
+  ): Promise<T>;
+  async withTransaction<T>(
+    ctxOrWork: RequestContext | ((ctx: RequestContext) => Promise<T>),
+    maybeWork?: (ctx: RequestContext) => Promise<T>,
+  ): Promise<T> {
+    let ctx: RequestContext;
+    let work: (ctx: RequestContext) => Promise<T>;
+
+    if (ctxOrWork instanceof RequestContext) {
+      ctx = ctxOrWork;
+      work = maybeWork;
+    } else {
+      ctx = RequestContext.empty();
+      work = ctxOrWork;
+    }
+
+    return this.transactionWrapper.executeInTransaction(
+      ctx,
+      work,
+      'auto',
+      this.rawConnection,
+    );
   }
 
   private getTransactionManager(

@@ -1,6 +1,7 @@
 import { TRANSACTION_MANAGER_KEY } from '@cometx-server/common';
 import { RequestContext } from '@cometx-server/request-context';
-import { first, from, Observable, retry, retryWhen, take, tap } from 'rxjs';
+import { from, Observable } from 'rxjs';
+import { retryWhen, take, tap } from 'rxjs/operators';
 import {
   Connection,
   QueryRunner,
@@ -14,16 +15,13 @@ export class TransactionWrapper {
     work: (ctx: RequestContext) => Observable<T> | Promise<T>,
     mode: TransactionMode,
     connection: Connection,
-  ) {
+  ): Promise<T> {
     const ctx = originalCtx.copy();
 
     const queryRunnerExist = !!(ctx as any)[TRANSACTION_MANAGER_KEY];
+
     if (queryRunnerExist) {
-      return new Promise((resolve, reject) => {
-        from(work(ctx))
-          .pipe(first())
-          .subscribe(result => resolve(result));
-      });
+      return from(work(ctx)).toPromise();
     }
     const queryRunner = connection.createQueryRunner();
 
@@ -35,22 +33,20 @@ export class TransactionWrapper {
     try {
       const maxRetries = 5;
 
-      const result = await new Promise((resolve, reject) => {
-        from(work(ctx))
-          .pipe(retry(maxRetries))
-          .subscribe({
-            next: result => resolve(result),
-            error: error =>
-              error.pipe(
-                tap(err => {
-                  if (!this.isRetriableError(err)) {
-                    reject(err);
-                  }
-                }),
-                take(maxRetries),
-              ),
-          });
-      });
+      const result = await from(work(ctx))
+        .pipe(
+          retryWhen(errors =>
+            errors.pipe(
+              tap(err => {
+                if (!this.isRetriableError(err)) {
+                  throw err;
+                }
+              }),
+              take(maxRetries),
+            ),
+          ),
+        )
+        .toPromise();
 
       if (queryRunner.isTransactionActive) {
         await queryRunner.commitTransaction();
@@ -61,6 +57,7 @@ export class TransactionWrapper {
       if (queryRunner.isTransactionActive) {
         await queryRunner.rollbackTransaction();
       }
+      throw error;
     } finally {
       if (queryRunner?.isReleased === false) {
         await queryRunner.release();

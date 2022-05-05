@@ -1,4 +1,4 @@
-import { Observable, of, tap } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Reflector } from '@nestjs/core';
 import {
   CallHandler,
@@ -18,7 +18,6 @@ import {
 } from './transaction.decorator';
 import { TransactionWrapper } from './transaction.wrapper';
 import { TransactionalConnection } from './transactional-connection';
-import { connect } from 'http2';
 
 @Injectable()
 export class TransactionInterceptor implements NestInterceptor {
