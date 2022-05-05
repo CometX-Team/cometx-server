@@ -126,19 +126,32 @@ describe('Transaction Infrastructure', () => {
     expect(verify.admins.length).toBe(1);
     expect(verify.users.length).toBe(1);
     expect(
-      !!verify.admins.find((a: any) => a.emailAddress === 'test2@gmail.com'),
+      !!verify.admins.find((a: any) =>
+        a.emailAddress.includes('testexecution'),
+      ),
     ).toBe(false);
     expect(
-      !!verify.users.find((u: any) => u.identifier === 'test2@gmail.com'),
+      !!verify.users.find((u: any) => u.identifier.includes('testexecution')),
     ).toBe(false);
   });
 
   it('failing transaction without request context', async () => {
     try {
-      await adminService.createAdministrator('test2@gmail.com', true);
+      await adminService.createAdministrator('test3@gmail.com', true);
       fail('Should have thrown');
     } catch (error) {
       expect(error.message).toContain('Failed');
     }
+
+    const verify = await adminService.verify();
+
+    expect(verify.admins.length).toBe(1);
+    expect(verify.users.length).toBe(1);
+    expect(
+      !!verify.admins.find((a: any) => a.emailAddress === 'test3@gmail.com'),
+    ).toBe(false);
+    expect(
+      !!verify.users.find((u: any) => u.identifier === 'test3@gmail.com'),
+    ).toBe(false);
   });
 });
