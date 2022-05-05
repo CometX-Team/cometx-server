@@ -50,45 +50,45 @@ describe('Transaction Infrastructure', () => {
     await testServer.destroy();
   });
 
-  // it('non failing transaction', async () => {
-  //   const createdAdmin = await adminService.createAdministrator(
-  //     ctx,
-  //     'test@gmail.com',
-  //     false,
-  //   );
+  it('non failing transaction', async () => {
+    const createdAdmin = await adminService.createAdministrator(
+      ctx,
+      'test@gmail.com',
+      false,
+    );
 
-  //   expect(createdAdmin.emailAddress).toBe('test@gmail.com');
-  //   expect(createdAdmin.user.identifier).toBe('test@gmail.com');
+    expect(createdAdmin.emailAddress).toBe('test@gmail.com');
+    expect(createdAdmin.user.identifier).toBe('test@gmail.com');
 
-  //   const verify = await adminService.verify();
+    const verify = await adminService.verify();
 
-  //   expect(
-  //     !!verify.admins.find((a: any) => a.emailAddress === 'test@gmail.com'),
-  //   ).toBe(true);
-  //   expect(
-  //     !!verify.users.find((u: any) => u.identifier === 'test@gmail.com'),
-  //   ).toBe(true);
-  // });
+    expect(
+      !!verify.admins.find((a: any) => a.emailAddress === 'test@gmail.com'),
+    ).toBe(true);
+    expect(
+      !!verify.users.find((u: any) => u.identifier === 'test@gmail.com'),
+    ).toBe(true);
+  });
 
-  // it('failing transaction', async () => {
-  //   try {
-  //     await adminService.createAdministrator(ctx, 'test2@gmail.com', true);
-  //     fail('Should have thrown');
-  //   } catch (e) {
-  //     expect(e.message).toContain('Failed');
-  //   }
+  it('failing transaction', async () => {
+    try {
+      await adminService.createAdministrator(ctx, 'test2@gmail.com', true);
+      fail('Should have thrown');
+    } catch (e) {
+      expect(e.message).toContain('Failed');
+    }
 
-  //   const verify = await adminService.verify();
+    const verify = await adminService.verify();
 
-  //   expect(verify.admins.length).toBe(1);
-  //   expect(verify.users.length).toBe(1);
-  //   expect(
-  //     !!verify.admins.find((a: any) => a.emailAddress === 'test2@gmail.com'),
-  //   ).toBe(false);
-  //   expect(
-  //     !!verify.users.find((u: any) => u.identifier === 'test2@gmail.com'),
-  //   ).toBe(false);
-  // });
+    expect(verify.admins.length).toBe(1);
+    expect(verify.users.length).toBe(1);
+    expect(
+      !!verify.admins.find((a: any) => a.emailAddress === 'test2@gmail.com'),
+    ).toBe(false);
+    expect(
+      !!verify.users.find((u: any) => u.identifier === 'test2@gmail.com'),
+    ).toBe(false);
+  });
 
   it('failing transaction with promise concurrent execution', async () => {
     const noOfExecution = 10;
