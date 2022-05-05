@@ -19,9 +19,13 @@ export class UserController {
       input.identifier,
     );
 
-    // throw new InternalServerError({
-    //   message: 'Just throw an error for no reason',
-    // });
+    return this.userService.getUserById(ctx, user.id);
+  }
+
+  @Transaction()
+  @Post()
+  async createAdministrator(@Ctx() ctx: DatabaseContext, @Body() input: any) {
+    const user = await this.userService.createAdminUser(ctx, input.identifier);
 
     return this.userService.getUserById(ctx, user.id);
   }
