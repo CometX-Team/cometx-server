@@ -4,7 +4,6 @@ import { ConnectionOptions } from 'typeorm';
 import {
   PostgresInitializer,
   registerInitializer,
-  SqlInitializer,
   testConfig as defaultTestConfig,
 } from '@cometx-server/testing';
 import { mergeConfig } from '@cometx-server/config';
@@ -12,7 +11,6 @@ import { mergeConfig } from '@cometx-server/config';
 dotenv.config({ path: `.env.test}` });
 
 registerInitializer('postgres', new PostgresInitializer());
-registerInitializer('sqljs', new SqlInitializer());
 
 export const testConfig = () => {
   return mergeConfig(defaultTestConfig, {
