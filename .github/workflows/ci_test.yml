@@ -1,0 +1,64 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 7.0.0
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: NX CI
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v2
+      - run: pnpx nx workspace-lint
+      - run: pnpx nx format:check
+      - run: pnpx nx affected --target=lint --parallel=3
+      - run: pnpx nx affected --target=test --parallel=3 --ci --code-coverage
+      - run: pnpx nx affected --target=build --parallel=3
+      - run: pnpx nx build
+  
+  tests:
+    name: tests
+    runs-on: ubuntu-latest
+    services:
+        postgres:
+          image: postgres:12
+          env:
+            DATABASE_TYPE: postgres
+            POSTGRES_DATABASE_HOST: localhost
+            POSTGRES_DATABASE_USER: admin
+            POSTGRES_DATABASE_PASSWORD: secret
+          ports:
+            - 5432
+          options: --health-cmd=pg_isready --health-interval=10s --health-timeout=5s --health-retries=3
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 7.0.0
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: run tests
+      - run: pnpm test
+
