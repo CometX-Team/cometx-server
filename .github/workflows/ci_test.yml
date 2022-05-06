@@ -42,14 +42,14 @@ jobs:
     runs-on: ubuntu-latest
     services:
         postgres:
-          image: postgres:12
+          image: postgres:11-alpine
           env:
             DATABASE_TYPE: postgres
             POSTGRES_DATABASE_HOST: localhost
             POSTGRES_DATABASE_USER: admin
             POSTGRES_DATABASE_PASSWORD: secret
           ports:
-            - 5432
+            - 5432:5432
           options: --health-cmd=pg_isready --health-interval=10s --health-timeout=5s --health-retries=3
     strategy:
         matrix:
