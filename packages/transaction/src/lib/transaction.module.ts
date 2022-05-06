@@ -19,6 +19,8 @@ export class TransactionModule {
         useFactory: (configService: ConfigService) => {
           const { databaseConfig } = configService;
 
+          console.log(databaseConfig);
+
           return {
             ...databaseConfig,
           };
