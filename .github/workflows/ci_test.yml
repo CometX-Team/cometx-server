@@ -66,6 +66,8 @@ jobs:
       - name: Create dotenv test file
         run: |
           touch .env.test
+          echo POSTGRES_NAME=cometxservertest >> .env.test
+          echo POSTGRES_HOST=localhost >> .env.test
           echo POSTGRES_USER=root >> .env.test
           echo POSTGRES_PASSWORD=secret >> .env.test
       - name: Install dependencies
