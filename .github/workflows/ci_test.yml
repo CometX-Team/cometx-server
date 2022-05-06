@@ -37,34 +37,34 @@ jobs:
       - run: pnpx nx affected --target=test --parallel=3 --ci --code-coverage
       - run: pnpx nx affected --target=build --parallel=3
 
-  # tests:
-  #   name: tests
-  #   runs-on: ubuntu-latest
-  #   services:
-  #       postgres:
-  #         image: postgres:12
-  #         env:
-  #           DATABASE_TYPE: postgres
-  #           POSTGRES_DATABASE_HOST: localhost
-  #           POSTGRES_DATABASE_USER: admin
-  #           POSTGRES_DATABASE_PASSWORD: secret
-  #         ports:
-  #           - 5432
-  #         options: --health-cmd=pg_isready --health-interval=10s --health-timeout=5s --health-retries=3
-  #   strategy:
-  #       matrix:
-  #         db: [postgres]
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: pnpm/action-setup@v2.0.1
-  #       with:
-  #         version: 7.0.0
-  #     - name: Use Node.js ${{ matrix.node-version }}
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: ${{ matrix.node-version }}
-  #         cache: 'pnpm'
-  #     - name: Install dependencies
-  #       run: pnpm install
-  #     - name: Run tests
-  #     - run: pnpm test
+  tests:
+    name: tests
+    runs-on: ubuntu-latest
+    services:
+        postgres:
+          image: postgres:12
+          env:
+            DATABASE_TYPE: postgres
+            POSTGRES_DATABASE_HOST: localhost
+            POSTGRES_DATABASE_USER: admin
+            POSTGRES_DATABASE_PASSWORD: secret
+          ports:
+            - 5432
+          options: --health-cmd=pg_isready --health-interval=10s --health-timeout=5s --health-retries=3
+    strategy:
+        matrix:
+          db: [postgres]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 7.0.0
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Run tests
+        run: pnpm test
