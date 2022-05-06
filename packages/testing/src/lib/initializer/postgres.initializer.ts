@@ -15,9 +15,9 @@ export class PostgresInitializer
   async init(databaseConfig: PostgresConnectionOptions) {
     const { database } = databaseConfig;
 
-    await this.renewDatabase(database as string);
-
     this.client = await this.initConnection(databaseConfig);
+
+    await this.renewDatabase(database as string);
   }
 
   async destroy() {
@@ -34,7 +34,7 @@ export class PostgresInitializer
       port: connectionOptions.port,
       user: connectionOptions.username,
       password: connectionOptions.password,
-      database: 'postgres',
+      database: connectionOptions.database,
     });
     await client.connect();
 
