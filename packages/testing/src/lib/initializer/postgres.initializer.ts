@@ -1,4 +1,3 @@
-import * as path from 'path';
 import { Client } from 'pg';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
@@ -16,8 +15,9 @@ export class PostgresInitializer
     const { database } = databaseConfig;
 
     this.client = await this.initConnection(databaseConfig);
-
-    await this.renewDatabase(database as string);
+    if (!process.env['CI']) {
+      await this.renewDatabase(database as string);
+    }
   }
 
   async destroy() {
@@ -42,12 +42,6 @@ export class PostgresInitializer
   }
 
   private async renewDatabase(dbName: string) {
-    // await this.client.query(
-    //   `REVOKE CONNECT ON DATABASE ${dbName} FROM public;`,
-    // );
-    // await this.client.query(`SELECT pg_terminate_backend(pg_stat_activity.pid)
-    //     FROM pg_stat_activity
-    //     WHERE pg_stat_activity.datname = '${dbName}';`);
     await this.client.query(`DROP DATABASE IF EXISTS ${dbName};`);
     await this.client.query(`CREATE DATABASE ${dbName};`);
   }
