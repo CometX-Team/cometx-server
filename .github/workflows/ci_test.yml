@@ -63,6 +63,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
+      - name: Create dotenv test file
+        run: |
+          touch .env.test
+          echo POSTGRES_USER=root >> .env.test
+          echo POSTGRES_PASSWORD=secret >> .env.test
       - name: Install dependencies
         run: pnpm install
       - name: Build

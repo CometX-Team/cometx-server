@@ -8,7 +8,7 @@ import path = require('path');
 import { ConnectionOptions } from 'typeorm';
 
 dotenv.config({
-  path: `integration/database/.env.${
+  path: `.env.${
     process.env['NODE_ENV'] === 'development'
       ? 'dev'
       : process.env['NODE_ENV'] === 'production'
