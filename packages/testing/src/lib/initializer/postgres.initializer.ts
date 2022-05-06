@@ -34,7 +34,7 @@ export class PostgresInitializer
       port: connectionOptions.port,
       user: connectionOptions.username,
       password: connectionOptions.password,
-      database: connectionOptions.database,
+      database: 'postgres',
     });
     await client.connect();
 
@@ -42,12 +42,12 @@ export class PostgresInitializer
   }
 
   private async renewDatabase(dbName: string) {
-    await this.client.query(
-      `REVOKE CONNECT ON DATABASE ${dbName} FROM public;`,
-    );
-    await this.client.query(`SELECT pg_terminate_backend(pg_stat_activity.pid)
-        FROM pg_stat_activity
-        WHERE pg_stat_activity.datname = '${dbName}';`);
+    // await this.client.query(
+    //   `REVOKE CONNECT ON DATABASE ${dbName} FROM public;`,
+    // );
+    // await this.client.query(`SELECT pg_terminate_backend(pg_stat_activity.pid)
+    //     FROM pg_stat_activity
+    //     WHERE pg_stat_activity.datname = '${dbName}';`);
     await this.client.query(`DROP DATABASE IF EXISTS ${dbName};`);
     await this.client.query(`CREATE DATABASE ${dbName};`);
   }
