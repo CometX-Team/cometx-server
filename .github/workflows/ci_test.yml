@@ -5,8 +5,13 @@ on:
       - main
   pull_request:
 
+env:
+  CI: true
+  node: 16.x
+
 jobs:
   build:
+    name: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -32,7 +37,6 @@ jobs:
       - run: pnpx nx affected --target=test --parallel=3 --ci --code-coverage
       - run: pnpx nx affected --target=build --parallel=3
       - run: pnpx nx build
-  
   tests:
     name: tests
     runs-on: ubuntu-latest
