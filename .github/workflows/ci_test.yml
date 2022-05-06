@@ -36,6 +36,7 @@ jobs:
       - run: pnpx nx affected --target=lint --parallel=3
       - run: pnpx nx affected --target=test --parallel=3 --ci --code-coverage
       - run: pnpx nx affected --target=build --parallel=3
+      - run: pnpx nx build
 
   tests:
     name: tests
@@ -67,4 +68,5 @@ jobs:
       - name: Run tests
         env:
           CI_POSTGRES_PORT: ${{ job.services.postgres.ports['5432'] }}
+        run: pnppx nx build
         run: pnpx nx run-many --all --target=test
