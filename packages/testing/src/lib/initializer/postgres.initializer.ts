@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { Client } from 'pg';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
@@ -14,9 +15,9 @@ export class PostgresInitializer
   async init(databaseConfig: PostgresConnectionOptions) {
     const { database } = databaseConfig;
 
-    this.client = await this.initConnection(databaseConfig);
-
     await this.renewDatabase(database as string);
+
+    this.client = await this.initConnection(databaseConfig);
   }
 
   async destroy() {
