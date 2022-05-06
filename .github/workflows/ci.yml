@@ -7,25 +7,25 @@ on:
 
 jobs:
   main:
-    build:
-    name: build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ env.node }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ env.node }}
-    - uses: actions/cache@v2
-      id: pnpm-cache # use this to check for `cache-hit` (`steps.pnpm-cache.outputs.cache-hit != 'true'`)
-      with:
-        path: '**/node_modules'
-        key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-pnpm-
-    - name: Pnpm install
-      if: steps.pnpm-cache.outputs.cache-hit != 'true'
-      run: pnpm install
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.pnpm-store
+            ~/.cache/pip
+          key: pnpm-n-pip-cache-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-n-pip-cache-${{ hashFiles('pnpm-lock.yaml') }}
+            pnpm-n-pip-cache-
+      - name: Setup
+        run: |
+          pip install wheel setuptools pip -U
+          npm i -g pnpm
+          pnpm setup:ci
     steps:
       - uses: actions/checkout@v2
         with:
