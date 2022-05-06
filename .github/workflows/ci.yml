@@ -26,7 +26,6 @@ jobs:
     - name: Pnpm install
       if: steps.pnpm-cache.outputs.cache-hit != 'true'
       run: pnpm install
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
