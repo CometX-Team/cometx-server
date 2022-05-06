@@ -66,14 +66,14 @@ jobs:
       - name: Create dotenv test file
         run: |
           touch .env.test
-          echo POSTGRES_NAME=cometxservertest >> .env.test
+          echo POSTGRES_NAME=postgres >> .env.test
           echo POSTGRES_HOST=localhost >> .env.test
           echo POSTGRES_USER=root >> .env.test
           echo POSTGRES_PASSWORD=secret >> .env.test
       - name: Install dependencies
         run: pnpm install
       - name: Build
-        run: pnpx nx run-many --all --target=build
+        run: pnpx nx test database
       - name: Run tests
         env:
           CI_POSTGRES_PORT: ${{ job.services.postgres.ports['5432'] }}
