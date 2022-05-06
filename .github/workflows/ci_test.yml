@@ -65,8 +65,9 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+      - name: Build
+        run: pnpx nx build
       - name: Run tests
         env:
           CI_POSTGRES_PORT: ${{ job.services.postgres.ports['5432'] }}
-        run: pnppx nx build
         run: pnpx nx run-many --all --target=test
