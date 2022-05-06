@@ -7,16 +7,34 @@ on:
 
 jobs:
   main:
+    build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ env.node }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.node }}
+    - uses: actions/cache@v2
+      id: pnpm-cache # use this to check for `cache-hit` (`steps.pnpm-cache.outputs.cache-hit != 'true'`)
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-
+    - name: Pnpm install
+      if: steps.pnpm-cache.outputs.cache-hit != 'true'
+      run: pnpm install
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - uses: nrwl/nx-set-shas@v2
-      - run: npm ci
 
-      - run: npx nx workspace-lint
-      - run: npx nx format:check
-      - run: npx nx affected --target=lint --parallel=3
-      - run: npx nx affected --target=test --parallel=3 --ci --code-coverage
-      - run: npx nx affected --target=build --parallel=3
+      - run: pnpx nx workspace-lint
+      - run: pnpx nx format:check
+      - run: pnpx nx affected --target=lint --parallel=3
+      - run: pnpx nx affected --target=test --parallel=3 --ci --code-coverage
+      - run: pnpx nx affected --target=build --parallel=3
