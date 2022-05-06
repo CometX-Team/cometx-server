@@ -7,7 +7,7 @@ on:
 
 env:
   CI: true
-  node: 16.x
+  node: 14.x
 
 jobs:
   build:
@@ -42,12 +42,13 @@ jobs:
     runs-on: ubuntu-latest
     services:
         postgres:
-          image: postgres:11-alpine
+          image: postgres:12
           env:
             DATABASE_TYPE: postgres
-            POSTGRES_USER: admin
+            POSTGRES_USER: root
             POSTGRES_PASSWORD: secret
             POSTGRES_HOST: localhost
+            POSTGRES_NAME: cometxservertest
           ports:
             - 5432:5432
           options: --health-cmd=pg_isready --health-interval=10s --health-timeout=5s --health-retries=5
