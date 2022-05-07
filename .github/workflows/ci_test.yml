@@ -45,8 +45,8 @@ jobs:
         postgres:
           image: postgres:12
           env:
-            POSTGRES_USER: root
-            POSTGRES_PASSWORD: secret
+            POSTGRES_USER: ${{ secret.POSTGRES_USER }}
+            POSTGRES_PASSWORD: ${{ secret.POSTGRES_PASSWORD }}
           ports:
             - 5432:5432
           options: --health-cmd=pg_isready --health-interval=10s --health-timeout=5s --health-retries=5
@@ -64,6 +64,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
       - name: Create dotenv test file
+        env:
+          POSTGRES_USER: ${{ secret.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secret.POSTGRES_PASSWORD }}
         run: |
           touch .env.test
           echo POSTGRES_NAME=postgres >> .env.test
