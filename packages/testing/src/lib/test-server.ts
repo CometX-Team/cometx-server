@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import { Test, TestingModule } from '@nestjs/testing';
 import { Type } from '@cometx-server/common';
 import { CometXConfig, preBootstrapConfig } from '@cometx-server/config';

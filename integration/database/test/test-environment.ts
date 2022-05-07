@@ -2,6 +2,7 @@ import * as path from 'path';
 import * as dotenv from 'dotenv';
 import { ConnectionOptions } from 'typeorm';
 import {
+  MysqlInitializer,
   PostgresInitializer,
   registerInitializer,
   testConfig as defaultTestConfig,
@@ -11,6 +12,7 @@ import { mergeConfig } from '@cometx-server/config';
 dotenv.config({ path: `.env.test}` });
 
 registerInitializer('postgres', new PostgresInitializer());
+registerInitializer('mysql', new MysqlInitializer());
 
 export const testConfig = () => {
   return mergeConfig(defaultTestConfig, {
@@ -27,12 +29,25 @@ const getDbConfig = (): ConnectionOptions => {
         type: 'postgres',
         synchronize: true,
         database: process.env['POSTGRES_NAME'],
-        host: process.env['POSTGRES_HOST'],
+        host: '127.0.0.1',
         port: process.env['CI']
           ? +(process.env['CI_POSTGRES_PORT'] || 5432)
           : 5432,
         username: process.env['POSTGRES_USER'],
         password: process.env['POSTGRES_PASSWORD'],
+      };
+    case 'mysql':
+      console.log('Using mysql connection');
+      return {
+        type: 'mysql',
+        synchronize: true,
+        database: process.env['MYSQL_NAME'],
+        host: '127.0.0.1',
+        port: process.env['CI']
+          ? +(process.env['CI_MYSQL_PORT'] || 3306)
+          : 3306,
+        username: process.env['MYSQL_USER'],
+        password: process.env['MYSQL_PASSWORD'],
       };
     case 'sqljs':
       console.log('Using sqljs connection');

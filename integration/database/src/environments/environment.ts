@@ -57,7 +57,7 @@ const databaseConfig: ConnectionOptions = {
   logging: false,
   database: process.env['DATABASE_NAME'],
   host: process.env['DATABASE_HOST'],
-  port: 5432,
+  port: process.env['DATABASE_PORT'] as unknown as number,
   username: process.env['DATABASE_USER'],
   password: process.env['DATABASE_PASSWORD'],
   migrations: [path.join(__dirname, '../migrations/*.ts')],
