@@ -71,8 +71,8 @@ jobs:
           touch .env.test
           echo POSTGRES_NAME=postgres >> .env.test
           echo POSTGRES_HOST=localhost >> .env.test
-          echo "$POSTGRES_USER" >> .env.test
-          echo "$POSTGRES_PASSWORD" >> .env.test
+          echo "POSTGRES_USER: $POSTGRES_USER" >> .env.test
+          echo "POSTGRES_PASSWORD: $POSTGRES_PASSWORD" >> .env.test
           cat .env.test
       - name: Install dependencies
         run: pnpm install
