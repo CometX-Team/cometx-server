@@ -3,13 +3,12 @@ import {
   TestPopulateOptions,
 } from './initializer.interface';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
-import { createConnection, Connection } from 'mysql2';
 import { promisify } from 'util';
 
 export class MysqlInitializer
   implements TestDBInitializer<MysqlConnectionOptions>
 {
-  private client: Connection;
+  private client: import('mysql2').Connection;
 
   async init(databaseConfig: MysqlConnectionOptions) {
     const { database } = databaseConfig;
@@ -29,6 +28,7 @@ export class MysqlInitializer
   }
 
   private async initConnection(connectionOptions: MysqlConnectionOptions) {
+    const { createConnection } = await import('mysql2');
     const conn = createConnection({
       host: connectionOptions.host,
       port: connectionOptions.port,

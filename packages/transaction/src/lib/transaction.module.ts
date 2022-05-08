@@ -16,13 +16,9 @@ export class TransactionModule {
     if (!defaultTypeOrmModule) {
       defaultTypeOrmModule = TypeOrmModule.forRootAsync({
         imports: [ConfigModule],
-        useFactory: (configService: ConfigService) => {
-          const { databaseConfig } = configService;
-
-          return {
-            ...databaseConfig,
-          };
-        },
+        useFactory: (configService: ConfigService) => ({
+          ...configService.databaseConfig,
+        }),
         inject: [ConfigService],
       });
     }
