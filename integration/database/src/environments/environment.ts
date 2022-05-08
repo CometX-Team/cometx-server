@@ -2,7 +2,9 @@ import {
   RuntimeCometXConfig,
   ApiOptions,
   AuthOptions,
+  EntityOptions,
 } from '@cometx-server/config';
+import { AutoIncrementIdStrategy } from '@cometx-server/entity';
 import * as dotenv from 'dotenv';
 import path = require('path');
 import { ConnectionOptions } from 'typeorm';
@@ -63,8 +65,13 @@ const databaseConfig: ConnectionOptions = {
   migrations: [path.join(__dirname, '../migrations/*.ts')],
 };
 
+const entityConfig: Required<EntityOptions> = {
+  entityIdStrategy: new AutoIncrementIdStrategy(),
+};
+
 export const config: RuntimeCometXConfig = {
   apiConfig,
   authConfig,
   databaseConfig,
+  entityConfig,
 };
