@@ -1,4 +1,5 @@
 import { Type } from '@cometx-server/common';
+import { setEntityIdStrategy } from '@cometx-server/entity';
 import { getConfig, setConfig } from '../config.helpers';
 import { CometXConfig } from '../config.interface';
 
@@ -19,6 +20,9 @@ export function preBootstrapConfig(
   setConfig(userConfig);
 
   const config = getConfig();
+  const { entityIdStrategy } = config.entityConfig;
+
+  setEntityIdStrategy(entityIdStrategy, entities);
 
   return config;
 }
