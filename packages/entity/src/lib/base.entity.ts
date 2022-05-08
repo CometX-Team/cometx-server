@@ -1,9 +1,6 @@
-import {
-  CreateDateColumn,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { DeepPartial, ID } from '@cometx-server/common';
+import { PrimaryGeneratedId } from './entity-id.decorator';
 
 /**
  * @description
@@ -20,7 +17,7 @@ export abstract class CometXEntity {
     }
   }
 
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedId()
   id: ID;
 
   @CreateDateColumn() createdAt: Date;
