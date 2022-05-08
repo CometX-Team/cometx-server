@@ -6,6 +6,7 @@
     "common": "packages/common",
     "config": "packages/config",
     "database": "integration/database",
+    "entity": "packages/entity",
     "error": "packages/error",
     "graphql": "packages/graphql",
     "logger": "packages/logger",

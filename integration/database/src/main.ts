@@ -7,7 +7,7 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { Type } from '@cometx-server/common';
 import { CometXConfig, preBootstrapConfig } from '@cometx-server/config';
-import { getAllEntities } from '@cometx-server/transaction';
+import { getAllEntities } from '@cometx-server/entity';
 
 import { coreEntitiesMap } from './environments/entitiesMap';
 import { config } from './environments/environment';

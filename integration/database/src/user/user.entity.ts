@@ -1,8 +1,7 @@
 import { Column, Entity } from 'typeorm';
 
 import { DeepPartial } from '@cometx-server/common';
-import { CometXEntity } from '@cometx-server/transaction'
-
+import { CometXEntity } from '@cometx-server/entity';
 
 /**
  * @description
@@ -10,20 +9,20 @@ import { CometXEntity } from '@cometx-server/transaction'
  *
  */
 @Entity()
-export class User extends CometXEntity  {
-    constructor(input?: DeepPartial<User>) {
-        super(input);
-    }
+export class User extends CometXEntity {
+  constructor(input?: DeepPartial<User>) {
+    super(input);
+  }
 
-    @Column({ type: Date, nullable: true })
-    deletedAt: Date | null;
+  @Column({ type: Date, nullable: true })
+  deletedAt: Date | null;
 
-    @Column({ type: String, nullable: true })
-    identifier: string;
+  @Column({ type: String, nullable: true })
+  identifier: string;
 
-    @Column({ default: false })
-    verified: boolean;
+  @Column({ default: false })
+  verified: boolean;
 
-    @Column({ type: Date, nullable: true })
-    lastLogin: Date | null;
+  @Column({ type: Date, nullable: true })
+  lastLogin: Date | null;
 }

@@ -4,7 +4,7 @@ import { Type } from '@cometx-server/common';
 import { CometXConfig, preBootstrapConfig } from '@cometx-server/config';
 import { BaseConnectionOptions } from 'typeorm/connection/BaseConnectionOptions';
 
-import { getAllEntities } from '@cometx-server/transaction';
+import { getAllEntities } from '@cometx-server/entity';
 import { INestApplication } from '@nestjs/common';
 import {
   getInitializer,

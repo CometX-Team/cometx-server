@@ -1,7 +1,7 @@
 import { DeepPartial } from '@cometx-server/common';
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 
-import { CometXEntity } from '@cometx-server/transaction';
+import { CometXEntity } from '@cometx-server/entity';
 import { User } from '../user/user.entity';
 
 /**
