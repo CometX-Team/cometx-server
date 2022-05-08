@@ -1,4 +1,5 @@
 import { AuthenticationStrategy } from '@cometx-server/authentication';
+import { EntityIdStrategy } from '@cometx-server/entity';
 import { Type } from '@nestjs/common';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { ValidationContext } from 'graphql';
@@ -211,6 +212,10 @@ export interface AuthOptions {
   verificationTokenDuration?: string | number;
 }
 
+export interface EntityOptions {
+  entityIdStrategy?: EntityIdStrategy<any>;
+}
+
 export interface CometXConfig {
   /**
    * @description
@@ -230,6 +235,11 @@ export interface CometXConfig {
    * Configuration for authorization.
    */
   authConfig: AuthOptions;
+  /**
+   * @description
+   * Configuration for entity.
+   */
+  entityConfig: EntityOptions;
 }
 
 /**

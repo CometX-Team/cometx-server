@@ -1,7 +1,9 @@
+import { AutoIncrementIdStrategy } from '@cometx-server/entity';
 import { ConnectionOptions } from 'typeorm';
 import {
   ApiOptions,
   AuthOptions,
+  EntityOptions,
   RuntimeCometXConfig,
 } from './config.interface';
 
@@ -50,8 +52,13 @@ const databaseConfig: ConnectionOptions = {
   password: process.env['DATABASE_PASSWORD'],
 };
 
+const entityConfig: Required<EntityOptions> = {
+  entityIdStrategy: new AutoIncrementIdStrategy(),
+};
+
 export const defaultConfig: RuntimeCometXConfig = {
   apiConfig,
   authConfig,
   databaseConfig,
+  entityConfig,
 };

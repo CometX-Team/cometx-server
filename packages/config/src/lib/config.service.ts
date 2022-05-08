@@ -5,6 +5,7 @@ import {
   ApiOptions,
   AuthOptions,
   CometXConfig,
+  EntityOptions,
   RuntimeCometXConfig,
 } from './config.interface';
 
@@ -26,5 +27,9 @@ export class ConfigService implements CometXConfig {
 
   get databaseConfig(): ConnectionOptions {
     return this.activeConfig.databaseConfig;
+  }
+
+  get entityConfig(): EntityOptions {
+    return this.activeConfig.entityConfig;
   }
 }
