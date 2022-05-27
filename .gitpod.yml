@@ -13,6 +13,7 @@ github:
     addComment: false
 
 tasks:
+  - before: npm install -g pnpm
   - init: pnpm install && pnpm run build
     command: pnpm run start
 
