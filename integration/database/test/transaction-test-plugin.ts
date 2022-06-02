@@ -1,4 +1,4 @@
-import { Injectable, Module } from '@nestjs/common';
+import { Body, Injectable, Module, Post } from '@nestjs/common';
 import {
   TransactionalConnection,
   TransactionModule,
@@ -7,6 +7,8 @@ import { DatabaseContext } from '../src/database-context/database-context';
 import { User } from '../src/user/user.entity';
 import { InternalServerError } from '@cometx-server/error';
 import { Administrator } from '../src/administrator/administrator.entity';
+import { Transaction } from 'typeorm';
+import { Ctx } from '@cometx-server/request-context';
 
 export const allSettled = promises => {
   return Promise.all(
@@ -97,9 +99,44 @@ export class TestAdminService {
   }
 }
 
+@Injectable()
+export class TestAdminServiceMock {
+  constructor(
+    private connection: TransactionalConnection,
+    private userService: TestUserService,
+  ) {}
+
+  async createAdministrator(ctx: DatabaseContext, emailAddress: string) {
+    const user = await this.userService.createUser(ctx, emailAddress);
+
+    const admin = this.connection.getRepository(ctx, Administrator).save(
+      new Administrator({
+        user,
+        emailAddress,
+        firstName: 'john',
+        lastName: 'doe',
+      }),
+    );
+
+    return admin;
+  }
+}
+
+@Injectable()
+export class TestAdminController {
+  constructor(private adminService: TestAdminServiceMock) {}
+
+  @Transaction()
+  @Post()
+  async createAdmin(@Ctx() ctx: DatabaseContext, @Body() input: any) {
+    return this.adminService.createAdministrator(ctx, input.emailAddress);
+  }
+}
+
 @Module({
   imports: [TransactionModule],
-  providers: [TestAdminService, TestUserService],
-  exports: [TestAdminService, TestUserService],
+  controllers: [TestAdminController],
+  providers: [TestAdminService, TestAdminServiceMock, TestUserService],
+  exports: [TestAdminService, TestAdminServiceMock, TestUserService],
 })
 export class TestAdminModule {}

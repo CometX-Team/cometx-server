@@ -50,7 +50,7 @@ describe('Transaction Infrastructure', () => {
     await testServer.destroy();
   });
 
-  it('non failing transaction', async () => {
+  it('should succeed transaction', async () => {
     const createdAdmin = await adminService.createAdministrator(
       'test@gmail.com',
       false,
@@ -70,7 +70,7 @@ describe('Transaction Infrastructure', () => {
     ).toBe(true);
   });
 
-  it('failing transaction', async () => {
+  it('should fail transaction', async () => {
     try {
       await adminService.createAdministrator('test2@gmail.com', true, ctx);
       fail('Should have thrown');
@@ -90,7 +90,7 @@ describe('Transaction Infrastructure', () => {
     ).toBe(false);
   });
 
-  it('failing transaction with promise concurrent execution', async () => {
+  it('should fail transaction with promise concurrent execution', async () => {
     const noOfExecution = 10;
     const failFactor = 0.4;
     const emailAddress = 'testexecution';
@@ -135,7 +135,7 @@ describe('Transaction Infrastructure', () => {
     ).toBe(false);
   });
 
-  it('failing transaction without request context', async () => {
+  it('should fail transaction without request context', async () => {
     try {
       await adminService.createAdministrator('test3@gmail.com', true);
       fail('Should have thrown');
