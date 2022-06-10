@@ -19,6 +19,7 @@ import {
  */
 export class TestServer {
   private app: INestApplication;
+  public httpServer: any;
   public testModule: TestingModule;
   public initializer: TestDBInitializer<BaseConnectionOptions>;
 
@@ -47,10 +48,13 @@ export class TestServer {
 
   async bootstrap() {
     this.app = await this.bootstrapForTesting();
+
+    await this.app.listen(this.testConfig.apiConfig.port || 3333, 'localhost');
   }
 
   async destroy() {
     await new Promise(resolve => global.setTimeout(resolve, 500));
+
     await this.app.close();
   }
 

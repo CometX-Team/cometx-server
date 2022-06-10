@@ -1,5 +1,13 @@
-import { Body, Injectable, Module, Post } from '@nestjs/common';
 import {
+  Body,
+  Controller,
+  Get,
+  Injectable,
+  Module,
+  Post,
+} from '@nestjs/common';
+import {
+  Transaction,
   TransactionalConnection,
   TransactionModule,
 } from '@cometx-server/transaction';
@@ -7,7 +15,6 @@ import { DatabaseContext } from '../src/database-context/database-context';
 import { User } from '../src/user/user.entity';
 import { InternalServerError } from '@cometx-server/error';
 import { Administrator } from '../src/administrator/administrator.entity';
-import { Transaction } from 'typeorm';
 import { Ctx } from '@cometx-server/request-context';
 
 export const allSettled = promises => {
@@ -106,8 +113,16 @@ export class TestAdminServiceMock {
     private userService: TestUserService,
   ) {}
 
-  async createAdministrator(ctx: DatabaseContext, emailAddress: string) {
+  async createAdministrator(
+    ctx: DatabaseContext,
+    emailAddress: string,
+    fail?: boolean,
+  ) {
     const user = await this.userService.createUser(ctx, emailAddress);
+
+    if (fail) {
+      throw new InternalServerError({ message: 'Failed' });
+    }
 
     const admin = this.connection.getRepository(ctx, Administrator).save(
       new Administrator({
@@ -120,16 +135,55 @@ export class TestAdminServiceMock {
 
     return admin;
   }
+
+  async verify() {
+    const admins = await this.connection.getRepository(Administrator).find();
+    const users = await this.connection.getRepository(User).find();
+
+    return { admins, users };
+  }
 }
 
-@Injectable()
+@Controller('admin')
 export class TestAdminController {
-  constructor(private adminService: TestAdminServiceMock) {}
+  constructor(
+    private connection: TransactionalConnection,
+    private adminService: TestAdminServiceMock,
+  ) {}
 
   @Transaction()
-  @Post()
+  @Post('createAdmin')
   async createAdmin(@Ctx() ctx: DatabaseContext, @Body() input: any) {
-    return this.adminService.createAdministrator(ctx, input.emailAddress);
+    return this.adminService.createAdministrator(
+      ctx,
+      input.emailAddress,
+      input?.fail,
+    );
+  }
+
+  @Transaction('manual')
+  @Post('createAdminManual')
+  async createAdminManual(@Ctx() ctx: DatabaseContext, @Body() input: any) {
+    await this.connection.startTransaction(ctx);
+    return this.adminService.createAdministrator(
+      ctx,
+      input.emailAddress,
+      input?.fail,
+    );
+  }
+
+  @Transaction('manual')
+  @Post('createAdminManualNoStartTransaction')
+  async createAdminManualNoStartTransaction(
+    @Ctx() ctx: DatabaseContext,
+    @Body() input: any,
+  ) {
+    // No transaction started
+    return this.adminService.createAdministrator(
+      ctx,
+      input.emailAddress,
+      input?.fail,
+    );
   }
 }
 
