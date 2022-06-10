@@ -117,6 +117,14 @@ export class TransactionalConnection {
     );
   }
 
+  async startTransaction(ctx: RequestContext) {
+    const transactionManager = this.getTransactionManager(ctx);
+
+    if (transactionManager?.queryRunner?.isTransactionActive === false) {
+      await transactionManager.queryRunner.startTransaction();
+    }
+  }
+
   private getTransactionManager(
     ctx: RequestContext,
   ): EntityManager | undefined {
