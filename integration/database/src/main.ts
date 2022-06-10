@@ -27,7 +27,7 @@ async function bootstrap(userConfig: Partial<CometXConfig>) {
 
   app.setGlobalPrefix(globalPrefix);
 
-  const port = process.env.PORT || 3333;
+  const port = config.apiConfig.port || 3333;
 
   await app.listen(port);
 

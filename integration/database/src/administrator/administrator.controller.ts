@@ -1,6 +1,6 @@
 import { Ctx } from '@cometx-server/request-context';
 
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { Transaction } from '@cometx-server/transaction';
 import { DatabaseContext } from '../database-context/database-context';
 import { AdministratorService } from './administrator.service';
@@ -15,6 +15,11 @@ export class AdminController {
     @Ctx() ctx: DatabaseContext,
     @Body() input: any,
   ): Promise<any> {
-    return this.adminService.createAdmin(ctx, input.identifier);
+    return this.adminService.createAdmin(ctx, input);
+  }
+
+  @Get()
+  async getAdmin() {
+    return 'This is admin route';
   }
 }
