@@ -14,7 +14,7 @@ import { DatabaseContextModule } from '../src/database-context/database-context.
 import { DatabaseContextService } from '../src/database-context/database-context.service';
 import { DatabaseContext } from '../src/database-context/database-context';
 
-describe('Transaction Infrastructure', () => {
+describe.skip('Transaction Infrastructure', () => {
   let adminService: TestAdminService;
   let databaseContextService: DatabaseContextService;
   let testServer: TestServer;

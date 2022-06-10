@@ -75,4 +75,4 @@ jobs:
         env:
           CI_POSTGRES_PORT: ${{ job.services.postgres.ports['5432'] }}
           CI_MYSQL_PORT: ${{ job.services.postgres.ports['3306'] }}
-        run: pnpx nx run-many --all --target=test --detectOpenHandles
+        run: pnpx nx run-many --all --target=test
