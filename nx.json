@@ -32,5 +32,6 @@
   "workspaceLayout": {
     "appsDir": "integration",
     "libsDir": "packages"
-  }
+  },
+  "defaultProject": "microservice"
 }

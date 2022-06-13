@@ -10,6 +10,7 @@
     "error": "packages/error",
     "graphql": "packages/graphql",
     "logger": "packages/logger",
+    "microservice": "integration/microservice",
     "request-context": "packages/request-context",
     "testing": "packages/testing",
     "transaction": "packages/transaction"
