@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'microservice',
+  displayName: 'microservices',
   preset: '../../jest.preset.ts',
   globals: {
     'ts-jest': {
@@ -11,5 +11,5 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/integration/microservice',
+  coverageDirectory: '../../coverage/integration/microservices',
 };

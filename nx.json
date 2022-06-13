@@ -33,5 +33,5 @@
     "appsDir": "integration",
     "libsDir": "packages"
   },
-  "defaultProject": "microservice"
+  "defaultProject": "microservices"
 }

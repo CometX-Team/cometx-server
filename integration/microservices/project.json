@@ -1,16 +1,16 @@
 {
-  "root": "integration/microservice",
-  "sourceRoot": "integration/microservice/src",
+  "root": "integration/microservices",
+  "sourceRoot": "integration/microservices/src",
   "projectType": "application",
   "targets": {
     "build": {
       "executor": "@nrwl/node:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/integration/microservice",
-        "main": "integration/microservice/src/main.ts",
-        "tsConfig": "integration/microservice/tsconfig.app.json",
-        "assets": ["integration/microservice/src/assets"]
+        "outputPath": "dist/integration/microservices",
+        "main": "integration/microservices/src/main.ts",
+        "tsConfig": "integration/microservices/tsconfig.app.json",
+        "assets": ["integration/microservices/src/assets"]
       },
       "configurations": {
         "production": {
@@ -19,8 +19,8 @@
           "inspect": false,
           "fileReplacements": [
             {
-              "replace": "integration/microservice/src/environments/environment.ts",
-              "with": "integration/microservice/src/environments/environment.prod.ts"
+              "replace": "integration/microservices/src/environments/environment.ts",
+              "with": "integration/microservices/src/environments/environment.prod.ts"
             }
           ]
         }
@@ -29,21 +29,21 @@
     "serve": {
       "executor": "@nrwl/node:node",
       "options": {
-        "buildTarget": "microservice:build"
+        "buildTarget": "microservices:build"
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["integration/microservice/**/*.ts"]
+        "lintFilePatterns": ["integration/microservices/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/integration/microservice"],
+      "outputs": ["coverage/integration/microservices"],
       "options": {
-        "jestConfig": "integration/microservice/jest.config.ts",
+        "jestConfig": "integration/microservices/jest.config.ts",
         "passWithNoTests": true
       }
     }
