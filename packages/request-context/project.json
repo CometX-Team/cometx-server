@@ -2,6 +2,30 @@
   "root": "packages/request-context",
   "sourceRoot": "packages/request-context/src",
   "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/request-context",
+        "tsConfig": "packages/request-context/tsconfig.lib.json",
+        "packageJson": "packages/request-context/package.json",
+        "main": "packages/request-context/src/index.ts",
+        "assets": ["packages/request-context/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs request-context {args.ver} {args.tag}",
+        "cwd": "dist/packages/request-context"
+      },
+      "dependsOn": [
+        {
+          "projects": "self",
+          "target": "build"
+        }
+      ]
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
