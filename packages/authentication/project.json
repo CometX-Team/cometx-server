@@ -2,6 +2,30 @@
   "root": "packages/authentication",
   "sourceRoot": "packages/authentication/src",
   "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/authentication",
+        "tsConfig": "packages/authentication/tsconfig.lib.json",
+        "packageJson": "packages/authentication/package.json",
+        "main": "packages/authentication/src/index.ts",
+        "assets": ["packages/authentication/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs authentication {args.ver} {args.tag}",
+        "cwd": "dist/packages/authentication"
+      },
+      "dependsOn": [
+        {
+          "projects": "self",
+          "target": "build"
+        }
+      ]
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
