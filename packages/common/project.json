@@ -2,6 +2,30 @@
   "root": "packages/common",
   "sourceRoot": "packages/common/src",
   "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/common",
+        "tsConfig": "packages/common/tsconfig.lib.json",
+        "packageJson": "packages/common/package.json",
+        "main": "packages/common/src/index.ts",
+        "assets": ["packages/common/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs common {args.ver} {args.tag}",
+        "cwd": "dist/packages/common"
+      },
+      "dependsOn": [
+        {
+          "projects": "self",
+          "target": "build"
+        }
+      ]
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
