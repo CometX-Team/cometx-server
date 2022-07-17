@@ -2,6 +2,30 @@
   "root": "packages/cache",
   "sourceRoot": "packages/cache/src",
   "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/cache",
+        "tsConfig": "packages/cache/tsconfig.lib.json",
+        "packageJson": "packages/cache/package.json",
+        "main": "packages/cache/src/index.ts",
+        "assets": ["packages/cache/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs cache {args.ver} {args.tag}",
+        "cwd": "dist/packages/cache"
+      },
+      "dependsOn": [
+        {
+          "projects": "self",
+          "target": "build"
+        }
+      ]
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
