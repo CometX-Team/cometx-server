@@ -2,6 +2,30 @@
   "root": "packages/transaction",
   "sourceRoot": "packages/transaction/src",
   "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/transaction",
+        "tsConfig": "packages/transaction/tsconfig.lib.json",
+        "packageJson": "packages/transaction/package.json",
+        "main": "packages/transaction/src/index.ts",
+        "assets": ["packages/transaction/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs transaction {args.ver} {args.tag}",
+        "cwd": "dist/packages/transaction"
+      },
+      "dependsOn": [
+        {
+          "projects": "self",
+          "target": "build"
+        }
+      ]
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
