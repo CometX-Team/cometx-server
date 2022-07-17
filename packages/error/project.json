@@ -2,6 +2,30 @@
   "root": "packages/error",
   "sourceRoot": "packages/error/src",
   "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/error",
+        "tsConfig": "packages/error/tsconfig.lib.json",
+        "packageJson": "packages/error/package.json",
+        "main": "packages/error/src/index.ts",
+        "assets": ["packages/error/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs error {args.ver} {args.tag}",
+        "cwd": "dist/packages/error"
+      },
+      "dependsOn": [
+        {
+          "projects": "self",
+          "target": "build"
+        }
+      ]
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
