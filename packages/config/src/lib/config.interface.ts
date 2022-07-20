@@ -1,10 +1,13 @@
-import { AuthenticationStrategy } from '@cometx-server/authentication';
-import { EntityIdStrategy } from '@cometx-server/entity';
 import { Type } from '@nestjs/common';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { ValidationContext } from 'graphql';
 import { ConnectionOptions } from 'typeorm';
 
+import {
+  AuthenticationStrategy,
+  PasswordHashingStrategy,
+} from '@cometx-server/authentication';
+import { EntityIdStrategy } from '@cometx-server/entity';
 /**
  * @description
  * The ApiOptions define how the CometX GraphQL APIs are exposed, as well as allowing the API layer
@@ -189,6 +192,12 @@ export interface AuthOptions {
    * @default NativeAuthenticationStrategy
    */
   adminAuthenticationStrategy?: AuthenticationStrategy[];
+  /**
+   * @description
+   * Allows you to customize the way passwords are hashed
+   *
+   */
+  passwordHashingStrategy?: PasswordHashingStrategy;
   /**
    * @description
    * Determines whether new User accounts require verification of their email address.

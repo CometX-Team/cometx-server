@@ -1,3 +1,4 @@
+import { Injector } from '@cometx-server/common';
 import {
   Module,
   OnApplicationBootstrap,
@@ -28,9 +29,10 @@ export class ConfigModule
   }
 
   private async initInjectableStrategies() {
+    const injector = new Injector(this.moduleRef);
     for (const strategy of this.getInjectableStrategies()) {
       if (typeof strategy.init === 'function') {
-        await strategy.init(this.moduleRef);
+        await strategy.init(injector);
       }
     }
   }
