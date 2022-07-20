@@ -1,6 +1,11 @@
-import { ModuleRef } from '@nestjs/core';
+import { Injector } from './injector';
 
+/**
+ * @description
+ * This interface defines the setup and teardown hooks available to the
+ * various strategies used to configure Vendure.
+ */
 export interface InjectableStrategy {
-  init?: (moduleRef: ModuleRef) => void | Promise<void>;
+  init?: (injector: Injector) => void | Promise<void>;
   destroy?: () => void | Promise<void>;
 }
