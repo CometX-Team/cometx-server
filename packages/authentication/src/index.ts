@@ -1,2 +1,2 @@
 export * from './lib/auth.guard';
-export * from './lib/authentication.strategy.interface';
+export * from './lib/authentication-strategy';
