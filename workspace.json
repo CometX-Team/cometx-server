@@ -9,6 +9,7 @@
     "entity": "packages/entity",
     "error": "packages/error",
     "graphql": "packages/graphql",
+    "graphql-schema-first": "integration/graphql-schema-first",
     "logger": "packages/logger",
     "microservices": "integration/microservices",
     "request-context": "packages/request-context",
