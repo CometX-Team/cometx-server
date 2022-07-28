@@ -1,0 +1,52 @@
+{
+  "root": "integration/graphql-schema-first",
+  "sourceRoot": "integration/graphql-schema-first/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/integration/graphql-schema-first",
+        "main": "integration/graphql-schema-first/src/main.ts",
+        "tsConfig": "integration/graphql-schema-first/tsconfig.app.json",
+        "assets": ["integration/graphql-schema-first/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "integration/graphql-schema-first/src/environments/environment.ts",
+              "with": "integration/graphql-schema-first/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "graphql-schema-first:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["integration/graphql-schema-first/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/integration/graphql-schema-first"],
+      "options": {
+        "jestConfig": "integration/graphql-schema-first/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
