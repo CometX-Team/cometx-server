@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
-import { RequestContext } from '@cometx-server/request-context';
 import { TransactionalConnection } from '@cometx-server/transaction';
-import { Administrator } from './administrator.entity';
+import { DatabaseContext } from '../database-context/database-context';
 import { UserService } from '../user/user.service';
-import { InternalServerError } from '@cometx-server/error';
+import { Administrator } from './administrator.entity';
 
 /**
  * @description
@@ -20,7 +19,7 @@ export class AdministratorService {
   ) {}
 
   async createAdmin(
-    ctx: RequestContext,
+    ctx: DatabaseContext,
     identifier: string,
   ): Promise<Administrator> {
     const user = await this.userService.createAdminUser(ctx, identifier);

@@ -1,8 +1,8 @@
 import { Ctx } from '@cometx-server/request-context';
-import { UserService } from './user.service';
-import { Body, Controller, Post } from '@nestjs/common';
 import { Transaction } from '@cometx-server/transaction';
+import { Body, Controller, Post } from '@nestjs/common';
 import { DatabaseContext } from '../database-context/database-context';
+import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
