@@ -1,13 +1,13 @@
 import {
-  RuntimeCometXConfig,
   ApiOptions,
   AuthOptions,
   EntityOptions,
+  RuntimeCometXConfig,
 } from '@cometx-server/config';
 import { AutoIncrementIdStrategy } from '@cometx-server/entity';
 import * as dotenv from 'dotenv';
-import path = require('path');
 import { ConnectionOptions } from 'typeorm';
+import path = require('path');
 
 dotenv.config({
   path: `.env.${
@@ -51,6 +51,7 @@ const authConfig: Required<AuthOptions> = {
   tokenMethod: 'cookie',
   requireVerification: false,
   verificationTokenDuration: '',
+  // passwordHashingStrategy: new BcryptPasswordHashingStrategy(),
 };
 
 const databaseConfig: ConnectionOptions = {

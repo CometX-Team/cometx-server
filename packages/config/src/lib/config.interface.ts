@@ -3,10 +3,7 @@ import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.int
 import { ValidationContext } from 'graphql';
 import { ConnectionOptions } from 'typeorm';
 
-import {
-  AuthenticationStrategy,
-  PasswordHashingStrategy,
-} from '@cometx-server/authentication';
+import { AuthenticationStrategy } from '@cometx-server/authentication';
 import { EntityIdStrategy } from '@cometx-server/entity';
 /**
  * @description
@@ -197,7 +194,7 @@ export interface AuthOptions {
    * Allows you to customize the way passwords are hashed
    *
    */
-  passwordHashingStrategy?: PasswordHashingStrategy;
+  // passwordHashingStrategy?: PasswordHashingStrategy;
   /**
    * @description
    * Determines whether new User accounts require verification of their email address.

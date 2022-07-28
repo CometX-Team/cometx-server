@@ -1,7 +1,6 @@
 {
   "version": 2,
   "projects": {
-    "auth-integration": "integration/auth-integration",
     "authentication": "packages/authentication",
     "cache": "packages/cache",
     "common": "packages/common",

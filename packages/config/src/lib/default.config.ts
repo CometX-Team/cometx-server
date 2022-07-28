@@ -1,4 +1,3 @@
-import { BcryptPasswordHashingStrategy } from '@cometx-server/authentication';
 import { AutoIncrementIdStrategy } from '@cometx-server/entity';
 import { ConnectionOptions } from 'typeorm';
 import {
@@ -40,7 +39,7 @@ const authConfig: Required<AuthOptions> = {
   tokenMethod: 'cookie',
   requireVerification: false,
   verificationTokenDuration: '',
-  passwordHashingStrategy: new BcryptPasswordHashingStrategy(),
+  // passwordHashingStrategy: new BcryptPasswordHashingStrategy(),
 };
 
 const databaseConfig: ConnectionOptions = {
