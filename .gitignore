@@ -42,3 +42,4 @@ Thumbs.db
 .env.dev
 .env.prod
 .env.test
+ormlogs.log

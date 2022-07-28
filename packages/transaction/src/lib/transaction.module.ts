@@ -22,7 +22,6 @@ export class TransactionModule {
         inject: [ConfigService],
       });
     }
-
     return {
       module: TransactionModule,
       imports: [defaultTypeOrmModule],

@@ -1,3 +1,4 @@
+import { BcryptPasswordHashingStrategy } from '@cometx-server/authentication';
 import {
   ApiOptions,
   AuthOptions,
@@ -51,7 +52,7 @@ const authConfig: Required<AuthOptions> = {
   tokenMethod: 'cookie',
   requireVerification: false,
   verificationTokenDuration: '',
-  // passwordHashingStrategy: new BcryptPasswordHashingStrategy(),
+  passwordHashingStrategy: new BcryptPasswordHashingStrategy(),
 };
 
 const databaseConfig: ConnectionOptions = {
