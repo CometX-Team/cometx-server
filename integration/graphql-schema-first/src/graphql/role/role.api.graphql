@@ -1,0 +1,13 @@
+type Query {
+    roles: RoleList!
+    role(id: ID!): Role
+}
+
+type Mutation {
+    "Create a new Role"
+    createRole(input: CreateRoleInput!): Role!
+    "Update an existing Role"
+    updateRole(input: UpdateRoleInput!): Role!
+    "Delete an existing Role"
+    deleteRole(id: ID!): DeletionResponse!
+}

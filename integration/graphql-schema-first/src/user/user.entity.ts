@@ -1,7 +1,8 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 
 import { DeepPartial } from '@cometx-server/common';
 import { CometXEntity } from '@cometx-server/entity';
+import { Role } from '../role/role.entity';
 
 /**
  * @description
@@ -25,4 +26,8 @@ export class User extends CometXEntity {
 
   @Column({ type: Date, nullable: true })
   lastLogin: Date | null;
+
+  @ManyToMany(() => Role)
+  @JoinTable()
+  roles: Role[];
 }

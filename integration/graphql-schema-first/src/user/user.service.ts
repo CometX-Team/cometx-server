@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-
 import { ID } from '@cometx-server/common';
 import { RequestContext } from '@cometx-server/request-context';
 import { TransactionalConnection } from '@cometx-server/transaction';
+import { Injectable } from '@nestjs/common';
+import { RoleService } from '../role/role.service';
 import { User } from './user.entity';
 
 /**
@@ -13,7 +13,10 @@ import { User } from './user.entity';
  */
 @Injectable()
 export class UserService {
-  constructor(private connection: TransactionalConnection) {}
+  constructor(
+    private connection: TransactionalConnection,
+    private roleService: RoleService,
+  ) {}
 
   async getUserById(
     ctx: RequestContext,
@@ -44,6 +47,8 @@ export class UserService {
   ): Promise<User> {
     const user = new User();
     user.identifier = identifier;
+    const customerRole = await this.roleService.getCustomerRole();
+    user.roles = [customerRole];
     return this.connection.getRepository(ctx, User).save(user);
   }
 
@@ -56,6 +61,8 @@ export class UserService {
     identifier: string,
   ): Promise<User> {
     const user = new User({ identifier, verified: true });
+    const adminRole = await this.roleService.getSuperAdminRole();
+    user.roles = [adminRole];
     return this.connection.getRepository(ctx, User).save(user);
   }
 }

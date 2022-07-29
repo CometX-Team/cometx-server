@@ -1,0 +1,11 @@
+overwrite: true
+schema:
+  - 'integration/graphql-schema-first/src/graphql/**/*.graphql'
+# documents:
+#   - 'apps/core/test/*.ts'
+generates:
+  integration/graphql-schema-first/src/generated-graphql.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-compatibility"

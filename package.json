@@ -5,10 +5,12 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "private": true,
   "dependencies": {
+    "@nestjs/apollo": "^10.0.19",
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/graphql": "^10.0.10",
@@ -28,11 +30,17 @@
     "pnpm": "^7.1.6",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.5.5",
+    "ts-morph": "^15.1.0",
     "tslib": "^2.3.0",
     "typeorm": "0.2.45",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.3.1",
+    "@graphql-codegen/introspection": "^2.2.0",
+    "@graphql-codegen/typescript": "^2.7.2",
+    "@graphql-codegen/typescript-compatibility": "^2.1.5",
+    "@graphql-codegen/typescript-operations": "^2.5.2",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.4.4",
     "@nrwl/cli": "14.0.3",

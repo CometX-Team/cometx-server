@@ -1,7 +1,9 @@
-import { User } from '../user/user.entity';
 import { Administrator } from '../administrator/administrator.entity';
+import { Role } from '../role/role.entity';
+import { User } from '../user/user.entity';
 
 export const coreEntitiesMap = {
   User,
   Administrator,
+  Role,
 };

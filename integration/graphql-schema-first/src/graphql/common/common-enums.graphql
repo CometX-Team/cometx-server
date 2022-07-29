@@ -1,0 +1,10 @@
+enum ErrorCode {
+    UNKNOWN_ERROR
+}
+
+enum DeletionResult {
+    "the entity is successfully deleted"
+    DELETED
+    "Deletion did not happen, error message to be given"
+    NOT_DELETED
+}
