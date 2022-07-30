@@ -40,11 +40,6 @@ export function addGraphQLCustomField(
       },
     );
 
-    console.log(
-      'Map Fields:',
-      mapToFields(customEntityFields, wrapListType(getGraphQLTypes)),
-    );
-
     if (schema.getType(entityName)) {
       if (customEntityFields.length) {
         customFieldTypeDefs += `
