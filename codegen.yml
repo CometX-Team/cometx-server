@@ -1,10 +1,13 @@
 overwrite: true
-schema:
-  - 'integration/graphql-schema-first/src/graphql/**/*.graphql'
-# documents:
-#   - 'apps/core/test/*.ts'
 generates:
   integration/graphql-schema-first/src/generated-graphql.ts:
+    schema: integration/graphql-schema-first/src/graphql/**/*.graphql
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-compatibility"
+  packages/graphql/src/lib/generated-custom-field.types.ts:
+    schema: packages/graphql/src/lib/custom-fields-types.graphql
     plugins:
       - "typescript"
       - "typescript-operations"

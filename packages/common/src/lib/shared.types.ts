@@ -75,9 +75,39 @@ export type Json =
  * @docsCategory common
  */
 export type JsonCompatible<T> = {
-    [P in keyof T]: T[P] extends Json
-        ? T[P]
-        : Pick<T, P> extends Required<Pick<T, P>>
-        ? never
-        : JsonCompatible<T[P]>;
+  [P in keyof T]: T[P] extends Json
+    ? T[P]
+    : Pick<T, P> extends Required<Pick<T, P>>
+    ? never
+    : JsonCompatible<T[P]>;
 };
+
+/**
+ * @description
+ * A data type for a custom field. The CustomFieldType determines the data types used in the generated
+ * database columns and GraphQL fields as follows (key: m = MySQL, p = Postgres, s = SQLite):
+ *
+ * Type         | DB type                               | GraphQL type
+ * -----        |---------                              |---------------
+ * string       | varchar                               | String
+ * localeString | varchar                               | String
+ * text         | longtext(m), text(p,s)                | String
+ * int          | int                                   | Int
+ * float        | double precision                      | Float
+ * boolean      | tinyint (m), bool (p), boolean (s)    | Boolean
+ * datetime     | datetime (m,s), timestamp (p)         | DateTime
+ * relation     | many-to-one / many-to-many relation   | As specified in config
+ *
+ * Additionally, the CustomFieldType also dictates which [configuration options](/docs/typescript-api/custom-fields/#configuration-options)
+ * are available for that custom field.
+ *
+ */
+export type CustomFieldType =
+  | 'string'
+  | 'localeString'
+  | 'int'
+  | 'float'
+  | 'boolean'
+  | 'datetime'
+  | 'relation'
+  | 'text';

@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`addGraphQLCustomField() should extends a type 1`] = `
+"type Product {
+  id: ID
+  customFields: ProductCustomFields
+}
+
+scalar JSON
+
+scalar DateTime
+
+type ProductCustomFields {
+  available: Boolean
+}
+"
+`;
+
+exports[`addGraphQLCustomField() should uses JSON scalar if no custom fields defined 1`] = `
+"type Product {
+  id: ID
+  customFields: JSON
+}
+
+scalar JSON
+
+scalar DateTime
+"
+`;

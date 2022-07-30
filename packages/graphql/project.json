@@ -7,10 +7,24 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/graphql",
-        "main": "packages/graphql/src/index.ts",
         "tsConfig": "packages/graphql/tsconfig.lib.json",
+        "packageJson": "packages/graphql/package.json",
+        "main": "packages/graphql/src/index.ts",
         "assets": ["packages/graphql/*.md"]
       }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs graphql {args.ver} {args.tag}",
+        "cwd": "dist/packages/graphql"
+      },
+      "dependsOn": [
+        {
+          "projects": "self",
+          "target": "build"
+        }
+      ]
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

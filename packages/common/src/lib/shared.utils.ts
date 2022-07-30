@@ -22,3 +22,12 @@ export function idsAreEqual(id1?: ID, id2?: ID): boolean {
   }
   return id1.toString() === id2.toString();
 }
+
+/**
+ * Used in exhaustiveness checks to assert a codepath should never be reached.
+ */
+export function assertNever(value: never): never {
+  throw new Error(
+    `Expected never, got ${typeof value} (${JSON.stringify(value)})`,
+  );
+}
