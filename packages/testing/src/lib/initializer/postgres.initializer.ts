@@ -1,8 +1,8 @@
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
 import {
-  TestPopulateOptions,
   TestDBInitializer,
+  TestPopulateOptions,
 } from './initializer.interface';
 
 export class PostgresInitializer
@@ -42,6 +42,7 @@ export class PostgresInitializer
   }
 
   private async renewDatabase(dbName: string) {
+    console.log('RENEW DATABASE Start **********');
     await this.client.query(
       `REVOKE CONNECT ON DATABASE ${dbName} FROM public;`,
       (err, res) => {
