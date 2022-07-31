@@ -1,29 +1,41 @@
 import { TRANSACTION_MANAGER_KEY } from '@cometx-server/common';
 import { RequestContext } from '@cometx-server/request-context';
-import { from, Observable } from 'rxjs';
+import { from, lastValueFrom, Observable } from 'rxjs';
 import { retryWhen, take, tap } from 'rxjs/operators';
-import {
-  Connection,
-  QueryRunner,
-  TransactionAlreadyStartedError,
-} from 'typeorm';
+import { Connection, EntityManager, QueryRunner } from 'typeorm';
+import { TransactionAlreadyStartedError } from 'typeorm/error/TransactionAlreadyStartedError';
 import { TransactionMode } from './transaction.decorator';
 
+/**
+ * @description
+ * This helper class is used to wrap operations in a TypeORM transaction in order to ensure
+ * atomic operations on the database.
+ */
 export class TransactionWrapper {
+  /**
+   * @description
+   * Executes the `work` function within the context of a transaction. If the `work` function
+   * resolves / completes, then all the DB operations it contains will be committed. If it
+   * throws an error or rejects, then all DB operations will be rolled back.
+   *
+   * @note
+   * This function does not mutate your context. Instead, this function makes a copy and passes
+   * context to work function.
+   */
   async executeInTransaction<T>(
     originalCtx: RequestContext,
     work: (ctx: RequestContext) => Observable<T> | Promise<T>,
     mode: TransactionMode,
     connection: Connection,
   ): Promise<T> {
+    // Copy to make sure original context will remain valid after transaction completes
     const ctx = originalCtx.copy();
 
-    const queryRunnerExist = !!(ctx as any)[TRANSACTION_MANAGER_KEY];
-
-    if (queryRunnerExist) {
-      return from(work(ctx)).toPromise();
-    }
-    const queryRunner = connection.createQueryRunner();
+    const entityManager: EntityManager | undefined = (ctx as any)[
+      TRANSACTION_MANAGER_KEY
+    ];
+    const queryRunner =
+      entityManager?.queryRunner || connection.createQueryRunner();
 
     if (mode === 'auto') {
       await this.startTransaction(queryRunner);
@@ -32,9 +44,8 @@ export class TransactionWrapper {
 
     try {
       const maxRetries = 5;
-
-      const result = await from(work(ctx))
-        .pipe(
+      const result = await lastValueFrom(
+        from(work(ctx)).pipe(
           retryWhen(errors =>
             errors.pipe(
               tap(err => {
@@ -45,13 +56,11 @@ export class TransactionWrapper {
               take(maxRetries),
             ),
           ),
-        )
-        .toPromise();
-
+        ),
+      );
       if (queryRunner.isTransactionActive) {
         await queryRunner.commitTransaction();
       }
-
       return result;
     } catch (error) {
       if (queryRunner.isTransactionActive) {
@@ -59,53 +68,50 @@ export class TransactionWrapper {
       }
       throw error;
     } finally {
-      if (queryRunner?.isReleased === false) {
+      if (
+        !queryRunner.isTransactionActive &&
+        queryRunner.isReleased === false
+      ) {
+        // There is a check for an active transaction
+        // because this could be a nested transaction (savepoint).
+
         await queryRunner.release();
       }
     }
   }
 
   /**
-   * In case a transaction already started for the conection,
-   * attempt to start a db connection with retry logic
-   * (which is mainly a problem with SQLite/Sql.js)
-   *
-   * @param queryRunner
-   * @returns void
+   * Attempts to start a DB transaction, with retry logic in the case that a transaction
+   * is already started for the connection (which is mainly a problem with SQLite/Sql.js)
    */
   private async startTransaction(queryRunner: QueryRunner) {
     const maxRetries = 25;
     let attempts = 0;
     let lastError: any;
 
-    // Return false if transaction is in already progress
+    // Returns false if a transaction is already in progress
     async function attemptStartTransaction(): Promise<boolean> {
       try {
         await queryRunner.startTransaction();
-
         return true;
-      } catch (error) {
-        lastError = error;
-        if (error instanceof TransactionAlreadyStartedError) {
+      } catch (err: any) {
+        lastError = err;
+        if (err instanceof TransactionAlreadyStartedError) {
           return false;
         }
-        throw error;
+        throw err;
       }
     }
 
     while (attempts < maxRetries) {
       const result = await attemptStartTransaction();
-
       if (result) {
         return;
       }
-
       attempts++;
-
-      // the more attempts, the more increase the relay
+      // insert an increasing delay before retrying
       await new Promise(resolve => setTimeout(resolve, attempts * 20));
     }
-
     throw lastError;
   }
 

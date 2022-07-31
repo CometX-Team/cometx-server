@@ -1,15 +1,15 @@
 import { TRANSACTION_MANAGER_KEY } from '@cometx-server/common';
+import { RequestContext } from '@cometx-server/request-context';
 import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/typeorm';
 import {
   Connection,
+  EntityManager,
   EntitySchema,
+  getRepository,
   ObjectType,
   Repository,
-  getRepository,
-  EntityManager,
 } from 'typeorm';
-import { RequestContext } from '@cometx-server/request-context';
 import { TransactionWrapper } from './transaction.wrapper';
 
 /**
