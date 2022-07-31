@@ -42,7 +42,6 @@ export class PostgresInitializer
   }
 
   private async renewDatabase(dbName: string) {
-    console.log('RENEW DATABASE Start **********');
     await this.client.query(
       `REVOKE CONNECT ON DATABASE ${dbName} FROM public;`,
       (err, res) => {

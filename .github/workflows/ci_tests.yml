@@ -60,6 +60,7 @@ jobs:
           touch .env.test
           echo DATABASE_TYPE="$DATABASE_TYPE"
           
+          echo CI=true >> .env.test
           echo MYSQL_NAME="$MYSQL_NAME" >> .env.test
           echo MYSQL_USER="$MYSQL_USER" >> .env.test
           echo MYSQL_PASSWORD="" >> .env.test
