@@ -14,9 +14,10 @@ export class MysqlInitializer
     const { database } = databaseConfig;
     this.client = await this.initConnection(databaseConfig);
     const query = promisify(this.client.query).bind(this.client);
-
     await query(`DROP DATABASE IF EXISTS ${database}`);
     await query(`CREATE DATABASE IF NOT EXISTS ${database}`);
+
+    return databaseConfig;
   }
   populate(options: TestPopulateOptions): Promise<void> {
     throw new Error('Method not implemented.');
