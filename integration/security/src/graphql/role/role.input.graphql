@@ -1,0 +1,10 @@
+input CreateRoleInput {
+    code: String!
+    description: String!
+}
+
+input UpdateRoleInput {
+    id: ID!
+    code: String
+    description: String
+}

@@ -1,0 +1,11 @@
+type Query {
+    customer(id: ID!): Customer
+}
+
+type Mutation {
+    "Create a new Customer"
+    createCustomer(input: CreateCustomerInput!): Customer
+    demo: String
+}
+
+union CreateCustomerResult = Customer | EmailAddressConflictError

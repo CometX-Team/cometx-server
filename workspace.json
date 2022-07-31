@@ -13,6 +13,7 @@
     "logger": "packages/logger",
     "microservices": "integration/microservices",
     "request-context": "packages/request-context",
+    "security": "integration/security",
     "testing": "packages/testing",
     "transaction": "packages/transaction"
   }

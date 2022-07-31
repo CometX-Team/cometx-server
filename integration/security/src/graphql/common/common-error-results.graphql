@@ -1,0 +1,5 @@
+"Returned wehn attempting to create a Customer with an email address already registered to an existing User."
+type EmailAddressConflictError implements ErrorResult {
+    errorCode: ErrorCode!
+    message: String!
+}

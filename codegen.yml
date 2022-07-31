@@ -6,6 +6,12 @@ generates:
       - "typescript"
       - "typescript-operations"
       - "typescript-compatibility"
+  integration/security/src/generated-typings.ts:
+    schema: integration/security/src/graphql/**/*.graphql
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-compatibility"
   packages/graphql/src/lib/generated-custom-field.types.ts:
     schema: packages/graphql/src/lib/custom-fields-types.graphql
     plugins:

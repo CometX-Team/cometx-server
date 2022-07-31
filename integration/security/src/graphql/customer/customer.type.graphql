@@ -1,0 +1,11 @@
+type Customer implements Node {
+    id: ID!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    title: String
+    firstName: String
+    lastName: String
+    phoneNumber: String
+    emailAddress: String
+    user: User
+}
