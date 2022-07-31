@@ -1,21 +1,16 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Injectable,
-  Module,
-  Post,
-} from '@nestjs/common';
+import { InternalServerError } from '@cometx-server/error';
+import { Ctx } from '@cometx-server/request-context';
 import {
   Transaction,
   TransactionalConnection,
   TransactionModule,
 } from '@cometx-server/transaction';
+
+import { Body, Controller, Injectable, Module, Post } from '@nestjs/common';
+
+import { Administrator } from '../src/administrator/administrator.entity';
 import { DatabaseContext } from '../src/database-context/database-context';
 import { User } from '../src/user/user.entity';
-import { InternalServerError } from '@cometx-server/error';
-import { Administrator } from '../src/administrator/administrator.entity';
-import { Ctx } from '@cometx-server/request-context';
 
 export const allSettled = promises => {
   return Promise.all(

@@ -1,22 +1,22 @@
-import { request } from 'undici';
+import { Type } from '@cometx-server/common';
 import { ConfigModule } from '@cometx-server/config';
 import { createTestEnvironment, TestServer } from '@cometx-server/testing';
 import { TransactionModule } from '@cometx-server/transaction';
-import { Type } from '@cometx-server/common';
 
+import { APP_GUARD } from '@nestjs/core';
+import { request } from 'undici';
+import { DatabaseContext } from '../src/database-context/database-context';
+import { DatabaseContextModule } from '../src/database-context/database-context.module';
+import { DatabaseContextService } from '../src/database-context/database-context.service';
+import { coreEntitiesMap } from '../src/environments/entitiesMap';
+import { DatabaseAuthGuard } from '../src/guard/database.auth.guard';
+import { testConfig } from './test-environment';
 import {
   TestAdminModule,
   TestAdminServiceMock,
 } from './transaction-test-plugin';
-import { DatabaseAuthGuard } from '../src/guard/database.auth.guard';
-import { testConfig } from './test-environment';
-import { coreEntitiesMap } from '../src/environments/entitiesMap';
-import { DatabaseContextModule } from '../src/database-context/database-context.module';
-import { DatabaseContextService } from '../src/database-context/database-context.service';
-import { DatabaseContext } from '../src/database-context/database-context';
-import { APP_GUARD } from '@nestjs/core';
 
-describe('Transaction Infrastructure', () => {
+describe('Transaction Infrastructure (Controller)', () => {
   let databaseContextService: DatabaseContextService;
   let adminService: TestAdminServiceMock;
   let testServer: TestServer;
