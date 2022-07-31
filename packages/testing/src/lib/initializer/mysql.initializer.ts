@@ -14,6 +14,8 @@ export class MysqlInitializer
     const { database } = databaseConfig;
     this.client = await this.initConnection(databaseConfig);
     const query = promisify(this.client.query).bind(this.client);
+
+    console.log('RENEW DATABASE ***');
     await query(`DROP DATABASE IF EXISTS ${database}`);
     await query(`CREATE DATABASE IF NOT EXISTS ${database}`);
 
