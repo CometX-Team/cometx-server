@@ -1,5 +1,6 @@
 import { ID, PaginatedList } from '@cometx-server/common';
 import { Ctx, RequestContext } from '@cometx-server/request-context';
+import { Transaction } from '@cometx-server/transaction';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   CreateAdministratorInput,
@@ -29,6 +30,7 @@ export class AdministratorResolver {
   }
 
   @Mutation()
+  @Transaction()
   createAdministrator(
     @Ctx() ctx: RequestContext,
     @Args('input') input: CreateAdministratorInput,
@@ -37,6 +39,7 @@ export class AdministratorResolver {
   }
 
   @Mutation()
+  @Transaction()
   updateAdministrator(
     @Ctx() ctx: RequestContext,
     @Args('input') input: UpdateAdministratorInput,
@@ -45,6 +48,7 @@ export class AdministratorResolver {
   }
 
   @Mutation()
+  @Transaction()
   deleteAdministrator(
     @Ctx() ctx: RequestContext,
     @Args('id') id: ID,

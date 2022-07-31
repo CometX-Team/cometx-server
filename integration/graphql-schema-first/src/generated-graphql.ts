@@ -11,6 +11,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   DateTime: any;
+  JSON: any;
 };
 
 export type Administrator = Node & {

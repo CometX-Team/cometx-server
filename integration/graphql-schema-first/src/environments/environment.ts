@@ -3,7 +3,7 @@ import {
   ApiOptions,
   AuthOptions,
   EntityOptions,
-  RuntimeCometXConfig,
+  RuntimeCometXConfig
 } from '@cometx-server/config';
 import { AutoIncrementIdStrategy } from '@cometx-server/entity';
 import * as dotenv from 'dotenv';
@@ -25,13 +25,13 @@ const apiConfig: Required<ApiOptions> = {
   port: 3100,
 
   adminApiPath: 'admin-api',
-  adminApiPlayground: false,
+  adminApiPlayground: true,
   adminApiDebug: false,
   adminListQueryLimit: 1000,
   adminApiValidationRules: [],
 
   shopApiPath: 'shop-api',
-  shopApiPlayground: false,
+  shopApiPlayground: true,
   shopApiDebug: false,
   shopListQueryLimit: 100,
   shopApiValidationRules: [],

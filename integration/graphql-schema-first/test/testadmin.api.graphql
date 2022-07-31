@@ -1,0 +1,18 @@
+type SearchResult {
+    administrators: [Administrator]
+    users: [User]
+}
+
+type Query {
+    verify: SearchResult
+}
+
+type Mutation {
+    createTestAdministrator(emailAddress: String!, fail: Boolean!): Administrator
+    createTestAdministrator2(emailAddress: String!, fail: Boolean!): Administrator
+    createTestAdministrator3(emailAddress: String!, fail: Boolean!): Administrator
+    createTestAdministrator4(emailAddress: String!, fail: Boolean!): Administrator
+    createTestAdministrator5(emailAddress: String!, fail: Boolean!, noContext: Boolean!): Administrator
+    createNTestAdministrators(emailAddress: String!, failFactor: Float!, n: Int!): [Administrator]
+    createNTestAdministrators2(emailAddress: String!, failFactor: Float!, n: Int!): [Administrator]
+}
