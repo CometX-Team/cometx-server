@@ -204,8 +204,5 @@ describe('Transaction Infrastructure (Resolver)', () => {
     );
   });
 
-  // @Todo - didn't rollback after concurrent transaction
-  itIfDB(['postgres', 'mysql'])(
-    'should fail mutation inside connection.withTransaction() wrapper with context and promise concurrent',
-  );
+  // @Todo - didn't rollback after concurrent trasaction
 });
