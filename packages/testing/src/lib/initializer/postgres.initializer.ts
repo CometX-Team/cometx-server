@@ -14,9 +14,7 @@ export class PostgresInitializer
     const { database } = databaseConfig;
 
     this.client = await this.initConnection(databaseConfig);
-    if (!process.env['CI']) {
-      await this.renewDatabase(database as string);
-    }
+    await this.renewDatabase(database as string);
   }
 
   async destroy() {

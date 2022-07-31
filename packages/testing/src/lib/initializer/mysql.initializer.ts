@@ -1,9 +1,9 @@
+import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
+import { promisify } from 'util';
 import {
   TestDBInitializer,
   TestPopulateOptions,
 } from './initializer.interface';
-import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
-import { promisify } from 'util';
 
 export class MysqlInitializer
   implements TestDBInitializer<MysqlConnectionOptions>
@@ -15,10 +15,8 @@ export class MysqlInitializer
     this.client = await this.initConnection(databaseConfig);
     const query = promisify(this.client.query).bind(this.client);
 
-    if (!process.env['CI']) {
-      await query(`DROP DATABASE IF EXISTS ${database}`);
-      await query(`CREATE DATABASE IF NOT EXISTS ${database}`);
-    }
+    await query(`DROP DATABASE IF EXISTS ${database}`);
+    await query(`CREATE DATABASE IF NOT EXISTS ${database}`);
   }
   populate(options: TestPopulateOptions): Promise<void> {
     throw new Error('Method not implemented.');
