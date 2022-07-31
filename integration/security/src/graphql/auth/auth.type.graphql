@@ -1,0 +1,4 @@
+type CurrentUser {
+    id: ID!
+    identifier: String!
+}

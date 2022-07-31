@@ -38,7 +38,7 @@ export async function createGraphQLOptions(
     // Paths must be normalized to use forward-slash separators.
     // See https://github.com/nestjs/graphql/issues/336
     const normalizedPaths = options.typePaths
-      .concat('packages/graphql/src/lib/custom-fields.types.graphql')
+      .concat(['packages/graphql/src/lib/custom-fields.types.graphql'])
       .map(p => p.split(path.sep).join('/'));
 
     const typeDefs = await typesLoader.mergeTypesByPaths(normalizedPaths);

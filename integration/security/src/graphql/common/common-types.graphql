@@ -19,3 +19,9 @@ type DeletionResponse {
     result: DeletionResult!
     message: String
 }
+"""
+Indicates that an operation succeeded, where we do not want to return any more specific information.
+"""
+type Success {
+    success: Boolean!
+}

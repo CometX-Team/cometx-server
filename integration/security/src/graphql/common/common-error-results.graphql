@@ -3,3 +3,16 @@ type EmailAddressConflictError implements ErrorResult {
     errorCode: ErrorCode!
     message: String!
 }
+
+"Returned if the user authentication credentials are not valid"
+type InvalidCredentialsError implements ErrorResult {
+    errorCode: ErrorCode!
+    message: String!
+    authenticationError: String!
+}
+
+"Returned when attempting an operation that relies on the NativeAuthStrategy, if that strategy is not configured."
+type LocalAuthenticationResult implements ErrorResult {
+    errorCode: ErrorCode!
+    message: String!
+}

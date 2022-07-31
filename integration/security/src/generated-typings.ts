@@ -31,6 +31,12 @@ export type AdministratorList = PaginatedList & {
   totalItems: Scalars['Int'];
 };
 
+export type AuthenticationInput = {
+  native?: InputMaybe<Scalars['String']>;
+};
+
+export type AuthenticationResult = CurrentUser | InvalidCredentialsError;
+
 export type CreateAdministratorInput = {
   emailAddress: Scalars['String'];
   firstName: Scalars['String'];
@@ -51,6 +57,12 @@ export type CreateCustomerResult = Customer | EmailAddressConflictError;
 export type CreateRoleInput = {
   code: Scalars['String'];
   description: Scalars['String'];
+};
+
+export type CurrentUser = {
+  __typename?: 'CurrentUser';
+  id: Scalars['ID'];
+  identifier: Scalars['String'];
 };
 
 export type Customer = Node & {
@@ -95,8 +107,25 @@ export type ErrorResult = {
   message: Scalars['String'];
 };
 
+/** Returned if the user authentication credentials are not valid */
+export type InvalidCredentialsError = ErrorResult & {
+  __typename?: 'InvalidCredentialsError';
+  authenticationError: Scalars['String'];
+  errorCode: ErrorCode;
+  message: Scalars['String'];
+};
+
+/** Returned when attempting an operation that relies on the NativeAuthStrategy, if that strategy is not configured. */
+export type LocalAuthenticationResult = ErrorResult & {
+  __typename?: 'LocalAuthenticationResult';
+  errorCode: ErrorCode;
+  message: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Authenticates the user using a named authentication strategy */
+  authenticate: AuthenticationResult;
   /** Create a new Administrator */
   createAdministrator: Administrator;
   /** Create a new Customer */
@@ -107,10 +136,20 @@ export type Mutation = {
   deleteAdministrator: DeletionResponse;
   /** Delete an existing Role */
   deleteRole: DeletionResponse;
+  demo?: Maybe<Scalars['String']>;
+  /** Authenticates the user using the native authentication strategy. This mutation is an alias for `authenticate({ native: { ... }})` */
+  login: LocalAuthenticationResult;
+  logout: Success;
   /** Update an existing Administrator */
   updateAdministrator: Administrator;
   /** Update an existing Role */
   updateRole: Role;
+};
+
+
+export type MutationAuthenticateArgs = {
+  input: AuthenticationInput;
+  rememberMe?: InputMaybe<Scalars['Boolean']>;
 };
 
 
@@ -139,6 +178,13 @@ export type MutationDeleteRoleArgs = {
 };
 
 
+export type MutationLoginArgs = {
+  password: Scalars['String'];
+  rememberMe?: InputMaybe<Scalars['Boolean']>;
+  username: Scalars['String'];
+};
+
+
 export type MutationUpdateAdministratorArgs = {
   input: UpdateAdministratorInput;
 };
@@ -163,6 +209,7 @@ export type Query = {
   administrator?: Maybe<Administrator>;
   administrators: AdministratorList;
   customer?: Maybe<Customer>;
+  me?: Maybe<CurrentUser>;
   role?: Maybe<Role>;
   roles: RoleList;
 };
@@ -193,6 +240,12 @@ export type RoleList = PaginatedList & {
   __typename?: 'RoleList';
   items: Array<Role>;
   totalItems: Scalars['Int'];
+};
+
+/** Indicates that an operation succeeded, where we do not want to return any more specific information. */
+export type Success = {
+  __typename?: 'Success';
+  success: Scalars['Boolean'];
 };
 
 export type UpdateAdministratorInput = {
