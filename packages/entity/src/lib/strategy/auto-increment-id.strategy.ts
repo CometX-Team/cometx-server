@@ -10,7 +10,6 @@ export class AutoIncrementIdStrategy implements EntityIdStrategy<'increment'> {
   }
 
   encodeId(primaryKey: number): string {
-    console.log(primaryKey);
     return primaryKey.toString();
   }
 }
